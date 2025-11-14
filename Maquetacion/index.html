@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda Rosa Pastel 💖</title>
+  <title>Tienda Rosa Pastel</title>
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
   <header>
-    <h1>🌸 Tienda Rosa Pastel</h1>
+    <h1>Tienda Rosa Pastel</h1>
     <button id="logoutBtn">Cerrar sesión</button>
   </header>
 
@@ -17,90 +17,8 @@
       <input type="text" id="search" placeholder="Buscar producto...">
     </div>
 
-    <div class="products" id="products"></div>
-
     <div class="cart-btn">
-      <a href="carrito.html">🛒 Ir al carrito</a>
+      <a href="carrito.html">Ir al carrito</a>
     </div>
-  </div>
-
-  <script>
-    // Simulación de productos
-    const products = JSON.parse(localStorage.getItem("productos")) || [
-      {
-        id: 1,
-        nombre: "Collar Luna Dorada",
-        precio: 40000,
-        descripcion: "Hermoso collar dorado con dije de luna.",
-        colores: ["Dorado", "Plateado"],
-        img: "https://i.imgur.com/5YQ1zXZ.jpg",
-        agotado: false
-      },
-      {
-        id: 2,
-        nombre: "Anillo Flor Rosa",
-        precio: 20000,
-        descripcion: "Anillo con forma de flor en tono rosa.",
-        colores: ["Rosa", "Rojo"],
-        img: "https://i.imgur.com/wxynMTs.jpg",
-        agotado: false
-      }
-    ];
-
-    const contenedor = document.getElementById("products");
-
-    function renderProducts(lista) {
-      contenedor.innerHTML = "";
-      lista.forEach(p => {
-        const div = document.createElement("div");
-        div.classList.add("product");
-
-        const coloresHTML = p.colores.map(c => `
-          <button class="color-btn" onclick="selectColor(${p.id}, '${c}')">${c}</button>
-        `).join("");
-
-        div.innerHTML = `
-          <img src="${p.img}" alt="${p.nombre}">
-          <h3>${p.nombre}</h3>
-          <p class="desc">${p.descripcion}</p>
-          <p class="precio">$${p.precio.toLocaleString()}</p>
-          <div class="colores">${coloresHTML}</div>
-          <button ${p.agotado ? "disabled" : ""} onclick="agregarAlCarrito(${p.id})" class="add-btn">
-            ${p.agotado ? "Agotado" : "Agregar al carrito"}
-          </button>
-        `;
-
-        contenedor.appendChild(div);
-      });
-    }
-
-    function agregarAlCarrito(id) {
-      const producto = products.find(p => p.id === id);
-      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      const existe = carrito.find(p => p.id === id);
-      if (!existe) {
-        carrito.push({...producto, cantidad: 1});
-      }
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      alert("Producto agregado al carrito 💖");
-    }
-
-    function selectColor(id, color) {
-      alert(`Color seleccionado: ${color}`);
-    }
-
-    document.getElementById("search").addEventListener("input", e => {
-      const texto = e.target.value.toLowerCase();
-      const filtrados = products.filter(p => p.nombre.toLowerCase().includes(texto));
-      renderProducts(filtrados);
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "login.html";
-    });
-
-    renderProducts(products);
-  </script>
 </body>
 </html>

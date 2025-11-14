@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito 💖</title>
+  <title>Carrito</title>
   <link rel="stylesheet" href="carrito.css">
 </head>
 <body>
   <header>
-    <h1>🛍️ Tu Carrito</h1>
+    <h1>Tu Carrito</h1>
     <div class="nav-btns">
       <a href="index.html" class="volver">← Volver a la tienda</a>
       <button id="logoutBtn">Cerrar sesión</button>
@@ -16,121 +16,17 @@
   </header>
 
   <div class="container">
-    <div id="carrito-list"></div>
+    <div id="carrito-list">
+    </div>
+
     <div class="total">
       Total: $<span id="total">0</span>
     </div>
-    <a id="whatsappBtn" class="whatsapp-btn" target="_blank">Enviar pedido por WhatsApp 💬</a>
+
+    <a id="whatsappBtn" class="whatsapp-btn" href="#" target="_blank">
+      Enviar pedido por WhatsApp
+    </a>
   </div>
 
-  <script>
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    const lista = document.getElementById("carrito-list");
-    const totalSpan = document.getElementById("total");
-    const whatsappBtn = document.getElementById("whatsappBtn");
-
-    function renderCarrito() {
-      lista.innerHTML = "";
-      let total = 0;
-
-      if (carrito.length === 0) {
-        lista.innerHTML = "<p class='vacio'>Tu carrito está vacío 💔</p>";
-        totalSpan.textContent = "0";
-        whatsappBtn.style.opacity = "0.5";
-        whatsappBtn.href = "#";
-        return;
-      }
-
-      carrito.forEach((item, i) => {
-        const div = document.createElement("div");
-        div.classList.add("item");
-
-        const coloresHTML = item.colores.map(c => `
-          <option value="${c}">${c}</option>
-        `).join("");
-
-        div.innerHTML = `
-          <img src="${item.img}" alt="${item.nombre}">
-          <div class="info">
-            <h3>${item.nombre}</h3>
-            <p>${item.descripcion}</p>
-            <select onchange="cambiarColor(${i}, this.value)">
-              ${coloresHTML}
-            </select>
-            <div class="cantidad">
-              <button onclick="cambiarCantidad(${i}, -1)">-</button>
-              <span>${item.cantidad}</span>
-              <button onclick="cambiarCantidad(${i}, 1)">+</button>
-            </div>
-            <p class="precio">$${(item.precio * item.cantidad).toLocaleString()}</p>
-            <input type="checkbox" onchange="toggleSeleccion(${i})" ${item.seleccionado ? "checked" : ""}> Seleccionar
-            <button class="eliminar" onclick="eliminarItem(${i})">Eliminar</button>
-          </div>
-        `;
-        lista.appendChild(div);
-
-        if (item.seleccionado) {
-          total += item.precio * item.cantidad;
-        }
-      });
-
-      totalSpan.textContent = total.toLocaleString();
-      actualizarWhatsApp();
-    }
-
-    function toggleSeleccion(i) {
-      carrito[i].seleccionado = !carrito[i].seleccionado;
-      guardar();
-    }
-
-    function cambiarCantidad(i, valor) {
-      carrito[i].cantidad += valor;
-      if (carrito[i].cantidad < 1) carrito[i].cantidad = 1;
-      guardar();
-    }
-
-    function cambiarColor(i, color) {
-      carrito[i].colorSeleccionado = color;
-      guardar();
-    }
-
-    function eliminarItem(i) {
-      carrito.splice(i, 1);
-      guardar();
-    }
-
-    function guardar() {
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      renderCarrito();
-    }
-
-    function actualizarWhatsApp() {
-      const seleccionados = carrito.filter(p => p.seleccionado);
-      if (seleccionados.length === 0) {
-        whatsappBtn.style.opacity = "0.5";
-        whatsappBtn.href = "#";
-        return;
-      }
-
-      const total = seleccionados.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
-      const mensaje = encodeURIComponent(
-        "Hola 👋, quiero comprar estos productos:\n\n" +
-        seleccionados.map(p =>
-          `- ${p.nombre} (${p.colorSeleccionado || "sin color"}) x${p.cantidad}: $${(p.precio * p.cantidad).toLocaleString()}`
-        ).join("\n") +
-        `\n\nTotal: $${total.toLocaleString()}`
-      );
-      const phone = "573001234567"; // 👉 Cambia por tu número de WhatsApp
-      whatsappBtn.style.opacity = "1";
-      whatsappBtn.href = `https://wa.me/${phone}?text=${mensaje}`;
-    }
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "login.html";
-    });
-
-    renderCarrito();
-  </script>
 </body>
 </html>
