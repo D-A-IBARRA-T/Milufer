@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración</h1>
+    <button id="logout">Cerrar sesión</button>
+  </header>
+
+  <main>
+    <section class="formulario">
+      <h2>Agregar / Editar Producto</h2>
+      <form id="productoForm">
+        <input type="hidden" id="editIndex">
+        <label>Nombre del producto:</label>
+        <input type="text" id="nombre" required>
+
+        <label>Descripción:</label>
+        <textarea id="descripcion" required></textarea>
+
+        <label>Precio:</label>
+        <input type="number" id="precio" required>
+
+        <label>Colores disponibles (separados por coma, ej: rojo, azul, verde):</label>
+        <input type="text" id="colores" placeholder="rojo, azul, verde">
+
+        <label>Estado:</label>
+        <select id="estado">
+          <option value="disponible">Disponible</option>
+          <option value="agotado">Agotado</option>
+        </select>
+
+        <label>Imagen del producto:</label>
+        <input type="file" id="imagenLocal" accept="image/*">
+        <input type="text" id="imagenURL" placeholder="O pega una URL de imagen">
+
+        <button type="submit">Guardar Producto</button>
+      </form>
+    </section>
+
+    <section class="lista-productos">
+      <h2>Productos Actuales</h2>
+      <div id="productosLista"></div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('productoForm');
+    const lista = document.getElementById('productosLista');
+    let productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+    function renderProductos() {
+      lista.innerHTML = '';
+      productos.forEach((p, i) => {
+        const item = document.createElement('div');
+        item.className = 'producto-item';
+        item.innerHTML = `
+          <img src="${p.imagen}" alt="${p.nombre}">
+          <div>
+            <h3>${p.nombre}</h3>
+            <p>${p.descripcion}</p>
+            <p><strong>Precio:</strong> $${p.precio}</p>
+            <p><strong>Colores:</strong> ${p.colores.join(', ')}</p>
+            <p><strong>Estado:</strong> ${p.estado === 'agotado' ? '❌ Agotado' : '✅ Disponible'}</p>
+            <button class="editar" data-index="${i}">Editar</button>
+            <button class="eliminar" data-index="${i}">Eliminar</button>
+          </div>
+        `;
+        lista.appendChild(item);
+      });
+
+      document.querySelectorAll('.editar').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const i = e.target.dataset.index;
+          const p = productos[i];
+          document.getElementById('editIndex').value = i;
+          document.getElementById('nombre').value = p.nombre;
+          document.getElementById('descripcion').value = p.descripcion;
+          document.getElementById('precio').value = p.precio;
+          document.getElementById('colores').value = p.colores.join(', ');
+          document.getElementById('estado').value = p.estado;
+          document.getElementById('imagenURL').value = p.imagen;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+
+      document.querySelectorAll('.eliminar').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const i = e.target.dataset.index;
+          if (confirm('¿Seguro quieres eliminar este producto?')) {
+            productos.splice(i, 1);
+            guardarProductos();
+            renderProductos();
+          }
+        });
+      });
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value.trim();
+      const descripcion = document.getElementById('descripcion').value.trim();
+      const precio = parseFloat(document.getElementById('precio').value);
+      const colores = document.getElementById('colores').value.split(',').map(c => c.trim()).filter(c => c);
+      const estado = document.getElementById('estado').value;
+      const imagenFile = document.getElementById('imagenLocal').files[0];
+      const imagenURL = document.getElementById('imagenURL').value.trim();
+
+      let imagen = '';
+
+      if (imagenFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagen = e.target.result;
+          guardarProducto(nombre, descripcion, precio, colores, estado, imagen);
+        };
+        reader.readAsDataURL(imagenFile);
+      } else {
+        imagen = imagenURL || 'https://via.placeholder.com/150';
+        guardarProducto(nombre, descripcion, precio, colores, estado, imagen);
+      }
+    });
+
+    function guardarProducto(nombre, descripcion, precio, colores, estado, imagen) {
+      const editIndex = document.getElementById('editIndex').value;
+
+      const nuevo = { nombre, descripcion, precio, colores, estado, imagen };
+
+      if (editIndex !== '') {
+        productos[editIndex] = nuevo;
+      } else {
+        productos.push(nuevo);
+      }
+
+      guardarProductos();
+      form.reset();
+      document.getElementById('editIndex').value = '';
+      renderProductos();
+    }
+
+    function guardarProductos() {
+      localStorage.setItem('productos', JSON.stringify(productos));
+    }
+
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('sesion');
+      window.location.href = 'login.html';
+    });
+
+    renderProductos();
+  </script>
+</body>
+</html>

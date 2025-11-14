@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1 class="title">Tienda Rosa</h1>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" placeholder="Ingresa tu correo" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+      </div>
+      <button type="submit" class="btn">Iniciar sesión</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if(email === "fabarragand2@gmail.com" && password === "12345"){
+        localStorage.setItem("rol", "admin");
+        window.location.href = "admin.html";
+      } else {
+        localStorage.setItem("rol", "usuario");
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>
