@@ -1,0 +1,43 @@
+{% extends "joyeria/base.html" %}
+{% block title %}Iniciar sesión • Tienda Milufer{% endblock %}
+
+{% block content %}
+<main class="login-page">
+    <section class="login-card">
+        <header class="login-header">
+            <h1 class="login-title">Tienda Milufer</h1>
+            <p class="login-subtitle">Inicia sesión para continuar</p>
+        </header>
+
+        <article class="login-form-container">
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                
+                <label for="username" class="visually-hidden">Correo electrónico</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="username" 
+                    placeholder="Ingresa tu correo" 
+                    required 
+                    autocomplete="username">
+
+                <label for="password" class="visually-hidden">Contraseña</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    placeholder="Ingresa tu contraseña" 
+                    required 
+                    autocomplete="current-password">
+
+                <button type="submit" class="login-submit">Iniciar sesión</button>
+            </form>
+        </article>
+
+        <footer class="login-footer">
+            <p>¿No tienes cuenta? <a href="#" class="register-link">Regístrate</a></p>
+        </footer>
+    </section>
+</main>
+{% endblock %}
