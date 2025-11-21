@@ -3,56 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Administración</title>
+  <title>Tienda Rosa Pastel</title>
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <header>
-    <h1>Panel de Administración</h1>
-    <button id="logout">Cerrar sesión</button>
+    <h1>MILUFER</h1>
+
+    <div class="header-buttons">
+      <button id="btnAddProduct">➕ Añadir producto</button>
+      <button id="statsBtn">Estadísticas</button>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </div>
   </header>
 
-  <main>
-    <section class="formulario">
-      <h2>Agregar / Editar Producto</h2>
-      <form id="productoForm">
-        <input type="hidden" id="editIndex">
-
-        <label for="nombre">Nombre del producto:</label>
-        <input type="text" id="nombre" required>
-
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" required></textarea>
-
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" min="0" required>
-
-        <label for="colores">Colores disponibles (separados por coma):</label>
-        <input type="text" id="colores" placeholder="rojo, azul, verde">
-
-        <label for="estado">Estado:</label>
-        <select id="estado">
-          <option value="disponible">Disponible</option>
-          <option value="agotado">Agotado</option>
-        </select>
-
-        <label for="imagenLocal">Imagen del producto (subir archivo):</label>
-        <input type="file" id="imagenLocal" accept="image/*">
-
-        <label for="imagenURL">O pega una URL de imagen:</label>
-        <input type="text" id="imagenURL" placeholder="https://ejemplo.com/imagen.jpg">
-
-        <button type="submit">Guardar Producto</button>
-      </form>
-    </section>
-
-    <section class="lista-productos">
-      <h2>Productos Actuales</h2>
-      <div id="productosLista">
-      </div>
-    </section>
-  </main>
-
-
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Buscar producto...">
+    </div>
 </body>
 </html>
