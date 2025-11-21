@@ -29,14 +29,12 @@ header h1 {
   font-weight: 700;
 }
 
-.header-buttons {
+.auth-buttons {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
-#btnAddProduct,
-#statsBtn,
-#logoutBtn {
+.auth-buttons button {
   background: #fff;
   color: #ff66b2;
   border: 2px solid #ff66b2;
@@ -47,9 +45,7 @@ header h1 {
   transition: all 0.3s ease;
 }
 
-#btnAddProduct:hover,
-#statsBtn:hover,
-#logoutBtn:hover {
+.auth-buttons button:hover {
   background: #ff66b2;
   color: white;
 }
