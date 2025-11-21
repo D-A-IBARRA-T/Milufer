@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión - Tienda Rosa Pastel</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="title">Tienda Rosa Pastel</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label for="{{ form.username.id_for_label }}">Correo electrónico</label>
+                {{ form.username }}
+            </div>
+
+            <div class="input-group">
+                <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                {{ form.password }}
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn">Iniciar sesión</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+

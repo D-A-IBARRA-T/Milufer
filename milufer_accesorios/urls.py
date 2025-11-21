@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from joyeria import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("login/", views.login_view, name="login"),
+    path("", views.login_view),  # Esta línea hace que la raíz muestre el login
 ]
+
