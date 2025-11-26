@@ -2,40 +2,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Iniciar sesión - Tienda Rosa Pastel</title>
-    <link rel="stylesheet" href="{% static 'login.css' %}">
+  <meta charset="UTF-8">
+  <title>Iniciar sesión - MILUFER</title>
+  <link rel="stylesheet" href="{% static 'login.css' %}">
 </head>
+
 <body>
-    <div class="login-container">
-        <h1 class="title">Tienda Rosa Pastel</h1>
+  <div class="login-container">
+    <h1 class="title">Tienda Milufer</h1>
 
-        <form method="post">
-            {% csrf_token %}
+    <form method="post" action="">
+      {% csrf_token %}
 
-            <div class="input-group">
-                <label for="{{ form.username.id_for_label }}">Correo electrónico</label>
-                {{ form.username }}
-            </div>
+      <div class="input-group">
+        <label for="{{ form.username.id_for_label }}">Correo electrónico</label>
+        {{ form.username }}
+      </div>
 
-            <div class="input-group">
-                <label for="{{ form.password.id_for_label }}">Contraseña</label>
-                {{ form.password }}
-            </div>
+      <div class="input-group">
+        <label for="{{ form.password.id_for_label }}">Contraseña</label>
+        {{ form.password }}
+      </div>
 
-            {% if form.non_field_errors %}
-                <div class="form-errors">
-                    {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
+      {% if form.non_field_errors %}
+        <div class="input-group">
+          <p style="color: #d63384; font-weight: bold;">
+            {% for error in form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </p>
+        </div>
+      {% endif %}
 
-            <button type="submit" class="btn">Iniciar sesión</button>
-        </form>
-    </div>
+      <button type="submit" class="btn">Iniciar sesión</button>
+    </form>
+
+    <p style="margin-top: 1.5rem; font-size: 0.95rem;">
+      ¿No tienes cuenta?
+      <a href="{% url 'registro' %}" style="color: #d63384; font-weight: bold;">Registrarse</a>
+    </p>
+  </div>
 </body>
 </html>
+
+
 
 
 
