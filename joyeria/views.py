@@ -29,7 +29,7 @@ def register_view(request):
         )
 
         # Crear perfil
-        perfil = PerfilUsuario.objects.create(
+        PerfilUsuario.objects.create(
             usuario=user,
             nombre=nombre,
             telefono=telefono
