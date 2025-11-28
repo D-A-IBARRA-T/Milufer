@@ -14,29 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-# tu_proyecto/urls.py  (el del proyecto, no el de la app)
+# milufer_accesorios/urls.py
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from joyeria import views  # ← tu app
+from django.conf import settings
+from django.conf.urls.static import static
+
+# IMPORTS CORRECTOS (sin import circular)
+from joyeria.views import index, register_view, carrito_view, panel_admin
 
 urlpatterns = [
-    # Panel de administración
     path('admin/', admin.site.urls),
 
-    # Login directo al abrir la página
-    path('', auth_views.LoginView.as_view(
-        template_name='login.html'
-    ), name='login'),
+    path('', index, name='home'),
 
-    # Registro de nuevos usuarios
-    path('registro/', views.register_view, name='registro'),
-
-
-    # Logout → vuelve al login
-    path('logout/', auth_views.LogoutView.as_view(
-        next_page='/'
-    ), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('registro/', register_view, name='registro'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login.html'), name='logout'),
+    
+    path('carrito/', carrito_view, name='carrito'),
+    path('panel-admin/', panel_admin, name='panel_admin'),
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

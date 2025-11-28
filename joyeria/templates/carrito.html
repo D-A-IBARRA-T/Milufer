@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - MILUFER</title>
+    <link rel="stylesheet" href="{% static 'carrito.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1>Tu Carrito</h1>
+        <div class="nav-btns">
+            <a href="{% url 'home' %}" class="volver">Volver a la tienda</a>
+            <a href="{% url 'logout' %}" class="btn-logout">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        {% if carrito %}
+            {% for item in carrito %}
+                <div class="item">
+                    <div class="info">
+                        <h3>{{ item.nombre }}</h3>
+                        <p>Cantidad: <strong>{{ item.cantidad }}</strong></p>
+                        <p class="precio">${{ item.subtotal|floatformat:0 }}.000</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="vacio">
+                <p>Tu carrito está vacío</p>
+            </div>
+        {% endif %}
+
+        <div class="total">
+            Total: <span>${{ total|floatformat:0 }}.000</span>
+        </div>
+
+        <a href="https://wa.me/573158891440?text=
+            ¡Hola%20Milufer!%20Quiero%20hacer%20este%20pedido:%0A%0A
+            {% for item in carrito %}
+            • {{ item.nombre }}%20×%20{{ item.cantidad }}%20=%20${{ item.subtotal|floatformat:0 }}.000%0A
+            {% endfor %}
+            %0A*Total%20a%20pagar:%20${{ total|floatformat:0 }}.000*%0A%0A¡Gracias!%20🩷
+            "
+           target="_blank" 
+           class="whatsapp-btn">
+            Enviar pedido por WhatsApp
+        </a>
+    </div>
+
+</body>
+</html>

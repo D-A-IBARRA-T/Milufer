@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - MILUFER</title>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+<body>
+    <header>
+        <h1>MILUFER <small>— Panel de Administración</small></h1>
+        <div class="header-buttons">
+            <a href="{% url 'admin:index' %} Producto_add/" class="btn-add">Añadir producto</a>
+            <a href="{% url 'logout' %}" class="btn-logout">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Buscar producto...">
+        </div>
+
+        <div class="productos-grid">
+            {% for p in productos %}
+                <div class="producto-card">
+                    {% if p.imagen %}
+                        <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+                    {% else %}
+                        <div class="sin-imagen">Sin foto</div>
+                    {% endif %}
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="precio">${{ p.precio|floatformat:0 }}.000</p>
+                    <div class="acciones">
+                        <a href="{% url 'admin:joyeria_producto_change' p.id %}" class="btn-edit">Editar</a>
+                        <small>{{ p.creado_en|date:"d/m/Y" }}</small>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="vacio">No hay productos aún. ¡Agrega el primero!</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

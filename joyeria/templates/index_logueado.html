@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MILUFER</title>
+  <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+<body>
+  <header>
+    <h1>MILUFER</h1>
+    <a href="{% url 'logout' %}">
+      <button id="logoutBtn">Cerrar sesión</button>
+    </a>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Buscar producto...">
+    </div>
+    <div class="cart-btn">
+      <a href="{% url 'carrito' %}">Ir al carrito</a>
+    </div>
+  </div>
+</body>
+</html>
