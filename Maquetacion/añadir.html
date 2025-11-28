@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title> MILUFER - Catálogo</title>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="añadir.css">
 </head>
 <body>
 
@@ -29,14 +29,22 @@
     <h3 id="modalTitle">Agregar producto</h3>
     <form id="productForm">
       <input type="hidden" id="editIndex">
-      <label>Nombre</label><input id="p_nombre" required>
-      <label>Precio (COP)</label><input id="p_precio" type="number" min="0" required>
-      <label>Descripción</label><textarea id="p_descripcion"></textarea>
-      <label>Materiales y calidad</label><textarea id="p_materiales"></textarea>
-      <label>Colores (separados por coma)</label><input id="p_colores" placeholder="rojo, azul">
-      <label>Cantidad en stock</label><input id="p_stock" type="number" min="0" value="1">
-      <label>Imagen (archivo local)</label><input id="p_file" type="file" accept="image/*">
-      <label>Ó usar URL de imagen</label><input id="p_imgurl" placeholder="https://...">
+      <label>Nombre</label>
+      <input id="p_nombre" required>
+      <label>Precio (COP)</label>
+      <input id="p_precio" type="number" min="0" required>
+      <label>Descripción</label>
+      <textarea id="p_descripcion"></textarea>
+      <label>Materiales y calidad</label>
+      <textarea id="p_materiales"></textarea>
+      <label>Colores (separados por coma)</label>
+      <input id="p_colores" placeholder="rojo, azul">
+      <label>Cantidad en stock</label>
+      <input id="p_stock" type="number" min="0" value="1">
+      <label>Imagen (archivo local)</label>
+      <input id="p_file" type="file" accept="image/*">
+      <label>Ó usar URL de imagen</label>
+      <input id="p_imgurl" placeholder="https://...">
       <div class="modal-actions">
         <button type="submit" class="btn">Guardar</button>
         <button type="button" id="btnCancel" class="btn alt">Cancelar</button>
