@@ -5,19 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MILUFER</title>
-  <link rel="stylesheet" href="{% static 'visitante.css' %}">
+  <link rel="stylesheet" href="{% static 'index.css' %}">
 </head>
 <body>
   <header>
     <h1>MILUFER</h1>
-    <div class="auth-buttons">
-      <a href="{% url 'login' %}">
-        <button id="loginBtn">Iniciar sesión</button>
+    {% if user.is_authenticated %}
+      <a href="{% url 'logout' %}">
+        <button id="logoutBtn">Cerrar sesión</button>
       </a>
-      <a href="{% url 'registro' %}">
-        <button id="registerBtn">Registrarse</button>
-      </a>
-    </div>
+    {% endif %}
   </header>
 
   <div class="container">
@@ -25,7 +22,7 @@
       <input type="text" id="search" placeholder="Buscar producto...">
     </div>
     <div class="cart-btn">
-      <a href="{% url 'login' %}">Ir al carrito</a>
+      <a href="{% url 'carrito' %}">Ir al carrito</a>
     </div>
   </div>
 </body>
