@@ -1,0 +1,278 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ffeaf6 0%, #fdf2fb 100%);
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ==================== HEADER ==================== */
+header {
+  background: #ff99cc;
+  color: white;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.btn-header {
+  background: white;
+  color: #ff66b2;
+  border: 2.5px solid #ff99cc;
+  padding: 0.6rem 1.3rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0.3s;
+}
+
+.btn-header:hover {
+  background: #ff66b2;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(255, 102, 178, 0.4);
+}
+
+/*}
+
+/* ==================== CONTAINER ==================== */
+.container {
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+/* ==================== BARRA DE BÚSQUEDA ==================== */
+.search-bar {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+#search {
+  width: 100%;
+  max-width: 560px;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: 3px solid #ffb3d9;
+  border-radius: 40px;
+  outline: none;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+#search:focus {
+  border-color: #ff66b2;
+  box-shadow: 0 0 0 5px rgba(255, 102,178,0.25);
+}
+
+/* ==================== GRID DE PRODUCTOS ==================== */
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.producto-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(255, 102, 178, 0.3);
+}
+
+.producto-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.sin-imagen {
+  width: 100%;
+  height: 320px;
+  background: #fff0f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff99cc;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.producto-card h3 {
+  padding: 1.2rem 1.4rem 0.5rem;
+  font-size: 1.25rem;
+  color: #444;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.producto-card p {
+  text-align: center;
+  padding: 0 1.4rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ff66b2;
+}
+
+.acciones {
+  padding: 0 1.2rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-edit,
+.btn-delete {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-edit {
+  background: #ff99cc;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #ff66b2;
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: white;
+  color: #ff4d94;
+  border: 2px solid #ff4d94;
+}
+
+.btn-delete:hover {
+  background: #ff4d94;
+  color: white;
+}
+
+.no-productos {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.6rem;
+  color: #ff99cc;
+  padding: 4rem;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 8px 25px rgba(255, 153, 204, 0.15);
+}
+
+/* ==================== MODAL ESTADÍSTICAS ==================== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 153, 204, 0.5);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 30px;
+  width: 90%;
+  max-width: 480px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(255, 102, 178, 0.4);
+  animation: modalPop 0.4s ease;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 2.5rem;
+  color: #ff99cc;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #ff3399;
+}
+
+.modal-content h2 {
+  color: #ff66b2;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.modal-content p {
+  font-size: 1.3rem;
+  margin: 1rem 0;
+  color: #555;
+}
+
+.modal-content strong {
+  color: #ff3399;
+  font-size: 1.6rem;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .header-buttons {
+    justify-content: center;
+  }
+
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 0 1rem;
+    margin: 1.5rem auto;
+  }
+}

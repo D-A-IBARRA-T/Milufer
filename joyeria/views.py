@@ -60,5 +60,8 @@ def es_admin(user):
 
 @user_passes_test(es_admin, login_url='login')
 def panel_admin(request):
-    productos = Producto.objects.all()
-    return render(request, 'panel_admin.html', {'productos': productos})
+    productos = Producto.objects.all().order_by('-creado_en')  # ordena por más nuevo
+    
+    return render(request, 'panel_admin.html', {
+        'productos': productos
+    })
