@@ -31,9 +31,7 @@ urlpatterns = [
 
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('registro/', register_view, name='registro'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login.html'), name='logout'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     
     path('carrito/', carrito_view, name='carrito'),
     path('panel_admin/', panel_admin, name='panel_admin'),

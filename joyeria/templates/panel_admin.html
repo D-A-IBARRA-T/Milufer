@@ -13,7 +13,10 @@
     <div class="header-buttons">
       <a href="{% url 'admin:joyeria_producto_add' %}" class="btn-header">Añadir producto</a>
       <button id="statsBtn" class="btn-header">Estadísticas</button>
-      <a href="{% url 'logout' %}" class="btn-header">Cerrar sesión</a>
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn-header">Cerrar sesión</button>
+      </form>
     </div>
   </header>
 

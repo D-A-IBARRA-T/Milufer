@@ -13,7 +13,10 @@
         <h1>Tu Carrito</h1>
         <div class="nav-btns">
             <a href="{% url 'home' %}" class="volver">Volver a la tienda</a>
-            <a href="{% url 'logout' %}" class="btn-logout">Cerrar sesión</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-header">Cerrar sesión</button>
+            </form>
         </div>
     </header>
 

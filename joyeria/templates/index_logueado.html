@@ -11,7 +11,10 @@
   <header>
     <h1>MILUFER</h1>
     <a href="{% url 'logout' %}">
-      <button id="logoutBtn">Cerrar sesión</button>
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+     {% csrf_token %}
+       <button type="submit" class="btn-header">Cerrar sesión</button>
+      </form>
     </a>
   </header>
 
