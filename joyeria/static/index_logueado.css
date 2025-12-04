@@ -1,0 +1,218 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ffeaf6 0%, #fdf2fb 100%);
+  color: #333;
+  min-height: 100vh;
+}
+
+header {
+  background: #ff99cc;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(255, 153, 204, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cart {
+  background: #ff66b2;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 102, 178, 0.3);
+  transition: all 0.3s ease;
+}
+
+.cart:hover {
+  background: #e91e63;
+  transform: translateY(-3px);
+}
+
+.logout {
+  background: white;
+  color: #ff66b2;
+  border: 2px solid #ff66b2;
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.logout:hover {
+  background: #ff66b2;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(255, 153, 204, 0.15);
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(255, 102, 178, 0.25);
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 4px solid #ffb3d9;
+}
+
+.sin-foto {
+  height: 220px;
+  background: #ffb3d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.card h3 {
+  padding: 1rem 0.8rem 0.5rem;
+  color: #d63384;
+  font-size: 1.25rem;
+}
+
+.card .precio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e91e63;
+  margin: 0.5rem 0;
+}
+
+.card .stock {
+  color: #2e8b57;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.card .agotado {
+  color: #e91e63;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.card.agotado::after {
+  content: "AGOTADO";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  font-size: 3rem;
+  font-weight: bold;
+  color: #e91e63;
+  background: rgba(255,255,255,0.9);
+  padding: 1rem 3rem;
+  border: 6px solid #e91e63;
+  border-radius: 20px;
+}
+
+.btn {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.8rem 2rem;
+  background: #ff66b2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  text-decoration: none;
+  width: fit-content;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: #e91e63;
+  transform: scale(1.05);
+}
+
+.btn:disabled, .btn[disabled] {
+  background: #ccc !important;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/*dd */
+.btn-admin {
+  background: #ff33aa;
+  color: white;
+  padding: 0.7rem 1.6rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 0.5rem;
+  box-shadow: 0 4px 15px rgba(255,51,170,0.3);
+}
+
+.btn-admin:hover {
+  background: #e91e63;
+  transform: translateY(-3px);
+}
+
+.logout-btn {
+  background: white;
+  color: #ff66b2;
+  border: 2.5px solid #ff66b2;
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.logout-btn:hover {
+  background: #ff66b2;
+  color: white;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  header { flex-direction: column; text-align: center; gap: 1rem; }
+  .nav { justify-content: center; }
+  .productos { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .productos { grid-template-columns: 1fr; }
+}

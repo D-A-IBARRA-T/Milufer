@@ -9,79 +9,53 @@
   <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
 </head>
 <body>
+
   <header>
     <h1>MILUFER</h1>
     <div class="header-buttons">
       <a href="{% url 'admin:joyeria_producto_add' %}" class="btn-header">Añadir producto</a>
-      <button id="statsBtn" class="btn-header">Estadísticas</button>
+      <a href="#" class="btn-header" onclick="alert('Pronto estarán las estadísticas ')">Estadísticas</a>
       <form action="{% url 'logout' %}" method="post" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit" class="btn-header">Cerrar sesión</button>
+        {% csrf_token %}
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Cerrar sesión</button>
+</form>
       </form>
     </div>
   </header>
 
   <div class="container">
     <div class="search-bar">
-      <input type="text" id="search" placeholder="Buscar producto..." onkeyup="filtrar()">
+      <form action="" method="get">
+        <input type="text" name="q" placeholder="Buscar producto..." value="{{ request.GET.q|default:'' }}">
+      </form>
     </div>
 
-    <div class="productos-grid" id="grid">
+    <div class="productos-grid">
       {% for p in productos %}
-      <div class="producto-card">
-        {% if p.imagen %}
-          <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
-        {% else %}
-          <div class="sin-imagen">Sin foto</div>
-        {% endif %}
-        <h3>{{ p.nombre }}</h3>
-        <p class="precio">$ {{ p.precio }}</p>
-        <div class="acciones">
-          <a href="{% url 'admin:joyeria_producto_change' p.id %}" class="btn-edit">Editar</a>
-          <a href="{% url 'admin:joyeria_producto_delete' p.id %}" class="btn-delete" 
-             onclick="return confirm('¿Eliminar {{ p.nombre }} para siempre?')">Eliminar</a>
+        <div class="producto-card">
+          {% if p.imagen %}
+            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+          {% else %}
+            <div class="sin-imagen">Sin foto</div>
+          {% endif %}
+          <h3>{{ p.nombre }}</h3>
+          <p class="precio">$ {{ p.precio|floatformat:0 }}.000</p>
+          <p class="stock">Stock: <strong>{{ p.stock }}</strong></p>
+          <div class="acciones">
+            <a href="{% url 'admin:joyeria_producto_change' p.id %}" class="btn-edit">Editar</a>
+            <a href="{% url 'admin:joyeria_producto_delete' p.id %}" class="btn-delete"
+              onclick="return confirm('¿Segura que querés eliminar {{ p.nombre }} para siempre?')">
+              Eliminar
+            </a>
+          </div>
         </div>
-      </div>
       {% empty %}
-      <p class="no-productos">Aún no tenés productos. ¡Empezá a subir!</p>
+        <p class="no-productos">Aún no tenés productos. ¡Empezá a subir!</p>
       {% endfor %}
     </div>
   </div>
 
-  <!-- Modal Estadísticas -->
-  <div id="statsModal" class="modal">
-    <div class="modal-content">
-      <span class="close">×</span>
-      <h2>Estadísticas</h2>
-      <p>Total de productos: <strong>{{ productos|length }}</strong></p>
-      <p>Productos visibles en tienda: <strong>{{ productos|length }}</strong></p>
-    </div>
-  </div>
-
-  <script>
-    // Abrir modal
-    document.getElementById('statsBtn').onclick = () => {
-      document.getElementById('statsModal').style.display = 'flex';
-    };
-    // Cerrar modal
-    document.querySelector('.close').onclick = () => {
-      document.getElementById('statsModal').style.display = 'none';
-    };
-    window.onclick = (e) => {
-      if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
-      }
-    };
-
-    // Filtro en vivo
-    function filtrar() {
-      let texto = document.getElementById('search').value.toLowerCase();
-      let cards = document.getElementsByClassName('producto-card');
-      for (let card of cards) {
-        let nombre = card.querySelector('h3').textContent.toLowerCase();
-        card.style.display = nombre.includes(texto) ? '' : 'none';
-      }
-    }
-  </script>
 </body>
 </html>

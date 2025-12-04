@@ -14,28 +14,29 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# milufer_accesorios/urls.py
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from joyeria import views
 from django.conf import settings
 from django.conf.urls.static import static
-
-# IMPORTS CORRECTOS (sin import circular)
-from joyeria.views import index, register_view, carrito_view, panel_admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('', index, name='home'),
-
+    path('', views.home, name='home'),                              # ← antes era 'index'
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('registro/', register_view, name='registro'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('registro/', views.register_view, name='registro'),
     
-    path('carrito/', carrito_view, name='carrito'),
-    path('panel_admin/', panel_admin, name='panel_admin'),
+    path('carrito/', views.carrito, name='carrito'),
+    path('agregar/<int:id>/', views.agregar_carrito, name='agregar_carrito'),
+    path('eliminar/<int:id>/', views.eliminar_carrito, name='eliminar_carrito'),
+    
+    # Si tienes el panel admin
+    path('panel_admin/', views.panel_admin, name='panel_admin'),
 ]
 
+# Para ver las imágenes
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,7 +11,6 @@ class PerfilUsuario(models.Model):
         return self.usuario.username
 
 
-# ← ESTE ES EL MODELO QUE FALTABA
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     precio = models.IntegerField(help_text="Precio en pesos (ej: 45000)")
@@ -19,6 +18,7 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
     activo = models.BooleanField(default=True)
     creado_en = models.DateTimeField(auto_now_add=True)
+    stock = models.PositiveIntegerField(default=10)
 
     def __str__(self):
         return self.nombre

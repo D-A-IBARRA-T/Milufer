@@ -4,27 +4,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MILUFER</title>
-  <link rel="stylesheet" href="{% static 'index.css' %}">
+  <title>MILUFER - Joyería y Accesorios</title>
+  <link rel="stylesheet" href="{% static 'index_visitante.css' %}">
   <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
 </head>
 <body>
+
   <header>
     <h1>MILUFER</h1>
-    {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}">
-        <button id="logoutBtn">Cerrar sesión</button>
-      </a>
-    {% endif %}
+    <div class="nav-buttons">
+      <a href="{% url 'login' %}" class="btn-login">Iniciar sesión</a>
+    </div>
   </header>
 
   <div class="container">
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Buscar producto...">
+
+    <div class="welcome">
+      <h2>¡Bienvenida a tu tienda de accesorios favoritos!</h2>
+      <p>Inicia sesión para comprar y ver tu carrito</p>
     </div>
-    <div class="cart-btn">
-      <a href="{% url 'carrito' %}">Ir al carrito</a>
+
+    <div class="productos-grid">
+      {% for p in productos %}
+        <div class="producto-card {% if p.stock == 0 %}agotado{% endif %}">
+          {% if p.imagen %}
+            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+          {% else %}
+            <div class="sin-imagen">Sin foto</div>
+          {% endif %}
+
+          <div class="info">
+            <h3>{{ p.nombre }}</h3>
+            <p class="precio">$ {{ p.precio|floatformat:0 }}.000</p>
+
+            {% if p.stock > 0 %}
+              <p class="stock">Quedan: <strong>{{ p.stock }}</strong></p>
+              <a href="{% url 'login' %}" class="btn-agregar">
+                Agregar al carrito
+              </a>
+            {% else %}
+              <p class="agotado-text">AGOTADO</p>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p class="sin-productos">Pronto tendremos productos hermosos</p>
+      {% endfor %}
     </div>
+
+    <!-- Botón flotante del carrito (solo redirige al login) -->
+    <a href="{% url 'login' %}" class="carrito-flotante">
+      Carrito <span class="contador">0</span>
+    </a>
+
   </div>
+
 </body>
 </html>

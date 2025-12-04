@@ -1,0 +1,234 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ffeaf6 0%, #fdf2fb 100%);
+  color: #333;
+  min-height: 100vh;
+}
+
+header {
+  background: #ff99cc;
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(255, 153, 204, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.btn-login {
+  background: white;
+  color: #ff66b2;
+  border: 3px solid #ff66b2;
+  padding: 0.8rem 2.2rem;
+  border-radius: 35px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: #ff66b2;
+  color: white;
+  transform: translateY(-4px);
+}
+
+.container {
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  position: relative;
+}
+
+.welcome {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.welcome h2 {
+  font-size: 2.6rem;
+  color: #d63384;
+  margin-bottom: 0.8rem;
+}
+
+.welcome p {
+  font-size: 1.3rem;
+  color: #ff66b2;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 2.2rem;
+}
+
+.producto-card {
+  background: white;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(255, 153, 204, 0.2);
+  transition: all 0.4s ease;
+  text-align: center;
+}
+
+.producto-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 25px 50px rgba(255, 102, 178, 0.35);
+}
+
+.producto-card img {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  border-bottom: 6px solid #ffb3d9;
+}
+
+.sin-imagen {
+  height: 270px;
+  background: #ffb3d9;
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  padding: 1.5rem 1rem;
+}
+
+.info h3 {
+  font-size: 1.35rem;
+  color: #d63384;
+  margin-bottom: 0.6rem;
+}
+
+.precio {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #e91e63;
+  margin: 0.8rem 0;
+}
+
+.stock {
+  color: #2e8b57;
+  font-weight: bold;
+  margin: 0.6rem 0;
+}
+
+.btn-agregar {
+  display: block;
+  margin: 1rem auto 0;
+  background: #ff66b2;
+  color: white;
+  padding: 0.9rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  width: fit-content;
+  transition: all 0.3s;
+}
+
+.btn-agregar:hover {
+  background: #e91e63;
+  transform: scale(1.05);
+}
+
+.agotado-text {
+  color: #e91e63;
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+
+.producto-card.agotado::after {
+  content: "AGOTADO";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #e91e63;
+  background: rgba(255,255,255,0.9);
+  padding: 1rem 3rem;
+  border: 7px solid #e91e63;
+  border-radius: 25px;
+}
+
+.sin-productos {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #ff66b2;
+  padding: 5rem;
+  background: rgba(255,102,178,0.05);
+  border: 4px dashed #ffb3d9;
+  border-radius: 30px;
+}
+
+/* Carrito flotante */
+.carrito-flotante {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #ff66b2;
+  color: white;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(255,102,178,0.5);
+  z-index: 999;
+  transition: all 0.3s;
+}
+
+.carrito-flotante:hover {
+  background: #e91e63;
+  transform: scale(1.15);
+}
+
+.contador {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e91e63;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  header { flex-direction: column; gap: 1rem; text-align: center; }
+  .welcome h2 { font-size: 2rem; }
+  .productos-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .productos-grid { grid-template-columns: 1fr; }
+}

@@ -5,54 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - MILUFER</title>
-    <link rel="stylesheet" href="{% static 'carrito.css' %}">
-    <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'carrito.CSS' %}">
 </head>
 <body>
 
     <header>
-        <h1>Tu Carrito</h1>
-        <div class="nav-btns">
-            <a href="{% url 'home' %}" class="volver">Volver a la tienda</a>
-            <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-principal">Cerrar sesión</button>
-            </form>
-        </div>
+    <h1>Tu Carrito</h1>
+    <a href="{% url 'home' %}" class="volver">Volver a la tienda</a>
     </header>
 
     <div class="container">
-        {% if carrito %}
-            {% for item in carrito %}
-                <div class="item">
-                    <div class="info">
-                        <h3>{{ item.nombre }}</h3>
-                        <p>Cantidad: <strong>{{ item.cantidad }}</strong></p>
-                        <p class="precio">${{ item.subtotal|floatformat:0 }}.000</p>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="vacio">
-                <p>Tu carrito está vacío</p>
-            </div>
-        {% endif %}
+    {% if carrito %}
+        {% for item in carrito %}
+        <div class="item-carrito">
+            <!-- IMAGEN DEL PRODUCTO -->
+            {% if item.imagen %}
+            <img src="{{ item.imagen.url }}" alt="{{ item.nombre }}" class="producto-img">
+            {% else %}
+            <div class="sin-imagen">Sin foto</div>
+            {% endif %}
 
-        <div class="total">
-            Total: <span>${{ total|floatformat:0 }}.000</span>
+            <div class="info">
+            <h3>{{ item.nombre }}</h3>
+            <p>Cantidad: <strong>{{ item.cantidad }}</strong></p>
+            <p class="precio-item">${{ item.subtotal|floatformat:0 }}.000</p>
+            </div>
+
+            <a href="{% url 'eliminar_carrito' item.id %}" class="eliminar">Eliminar</a>
+        </div>
+        {% endfor %}
+
+        <div class="total-final">
+        Total: <span>${{ total|floatformat:0 }}.000</span>
         </div>
 
-        <a href="https://wa.me/573158891440?text=
-            ¡Hola%20Milufer!%20Quiero%20hacer%20este%20pedido:%0A%0A
-            {% for item in carrito %}
-            • {{ item.nombre }}%20×%20{{ item.cantidad }}%20=%20${{ item.subtotal|floatformat:0 }}.000%0A
-            {% endfor %}
-            %0A*Total%20a%20pagar:%20${{ total|floatformat:0 }}.000*%0A%0A¡Gracias!%20🩷
-            "
-           target="_blank" 
-           class="whatsapp-btn">
-            Enviar pedido por WhatsApp
+        <a href="https://wa.me/573158891440?text=¡Hola! Quiero hacer este pedido:%0A{% for item in carrito %}• {{ item.nombre }} × {{ item.cantidad }} = ${{ item.subtotal|floatformat:0 }}.000%0A{% endfor %}%0ATotal: ${{ total|floatformat:0 }}.000" 
+            target="_blank" class="btn-whatsapp">
+        Enviar pedido por WhatsApp
         </a>
+
+    {% else %}
+        <p class="carrito-vacio">Tu carrito está vacío</p>
+    {% endif %}
     </div>
 
 </body>

@@ -2,30 +2,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MILUFER</title>
-  <link rel="stylesheet" href="{% static 'index.css' %}">
-  <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILUFER</title>
+    <link rel="stylesheet" href="{% static 'index_logueado.css' %}">
 </head>
 <body>
-  <header>
+    <header>
     <h1>MILUFER</h1>
-    <a href="{% url 'logout' %}">
-      <form action="{% url 'logout' %}" method="post" style="display:inline;">
-     {% csrf_token %}
-       <button type="submit" class="btn-principal">Cerrar sesión</button>
-      </form>
-    </a>
-  </header>
+    <div class="nav">
+        <a href="{% url 'carrito' %}" class="cart">Carrito ({{ cart_count }})</a>
+        {% if user.is_staff %}
+        <a href="{% url 'panel_admin' %}" class="btn-admin">Panel Admin</a>
+        {% endif %}
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Cerrar sesión</button>
+</form>
+    </div>
+    </header>
 
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Buscar producto...">
+    <div class="container">
+        <div class="productos">
+            {% for p in productos %}
+                <div class="card {% if p.stock == 0 %}agotado{% endif %}">
+                    {% if p.imagen %}
+                        <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+                    {% else %}
+                        <div class="sin-foto">Sin foto</div>
+                    {% endif %}
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="precio">${{ p.precio|floatformat:0 }}.000</p>
+                    {% if p.stock > 0 %}
+                        <p class="stock">Quedan {{ p.stock }}</p>
+                        <a href="{% url 'agregar_carrito' p.id %}" class="btn">Agregar al carrito</a>
+                    {% else %}
+                        <p class="agotado">AGOTADO</p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No hay productos</p>
+            {% endfor %}
+        </div>
     </div>
-    <div class="cart-btn">
-      <a href="{% url 'carrito' %}">Ir al carrito</a>
-    </div>
-  </div>
 </body>
 </html>
