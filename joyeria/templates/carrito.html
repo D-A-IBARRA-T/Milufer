@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - MILUFER</title>
     <link rel="stylesheet" href="{% static 'carrito.css' %}">
+    <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
 </head>
 <body>
 
@@ -15,7 +16,7 @@
             <a href="{% url 'home' %}" class="volver">Volver a la tienda</a>
             <form action="{% url 'logout' %}" method="post" style="display:inline;">
             {% csrf_token %}
-            <button type="submit" class="btn-header">Cerrar sesión</button>
+            <button type="submit" class="btn-principal">Cerrar sesión</button>
             </form>
         </div>
     </header>

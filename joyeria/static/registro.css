@@ -18,7 +18,7 @@ body {
 /* Contenedor principal */
 .card {
   background: white;
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 2rem 3rem; /* más espacio abajo */
   border-radius: 25px;
   box-shadow: 0 15px 35px rgba(255, 153, 204, 0.25);
   width: 100%;
@@ -47,6 +47,11 @@ h2 {
   margin-bottom: 1.5rem;
   font-weight: 700;
   text-shadow: 1px 1px 3px rgba(255, 102, 178, 0.2);
+}
+
+/* Agrupación de campos */
+.form-group {
+  margin-bottom: 1.2rem; /* espacio entre inputs */
 }
 
 /* Etiquetas */
@@ -93,8 +98,10 @@ h2 {
   font-weight: bold;
   cursor: pointer;
   margin-top: 1rem;
+  margin-bottom: 1.2rem; /* nuevo espacio abajo */
   transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(255, 102, 178, 0.3);
+  width: 100%; /* ocupa todo el ancho */
 }
 
 .btn-primary:hover {
@@ -118,7 +125,7 @@ h2 {
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
-  margin-top: 0.5rem;
+  margin-top: 0.8rem; /* más espacio arriba */
 }
 
 .btn-secondary:hover {
@@ -149,7 +156,7 @@ h2 {
 /* Responsive */
 @media (max-width: 480px) {
   .card {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 2.5rem;
     border-radius: 20px;
   }
 
@@ -162,3 +169,4 @@ h2 {
     padding: 0.9rem;
   }
 }
+

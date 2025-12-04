@@ -51,6 +51,24 @@ header h1 {
   margin: 2rem auto;
   padding: 0 1rem;
 }
+.btn-principal {
+  background-color: #f48fb1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-principal:hover {
+  background-color: #ec407a;
+}
+
 
 .search-bar {
   margin-bottom: 2rem;

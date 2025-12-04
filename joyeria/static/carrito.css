@@ -36,18 +36,42 @@ header h1 {
 }
 
 .volver {
-  background: rgba(255, 255, 255, 0.2);
+  background-color: #f48fb1;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .volver:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background-color: #ec407a;
 }
+
+.btn-principal {
+  background-color: #f48fb1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-principal:hover {
+  background-color: #ec407a;
+}
+
+
+
 
 .btn-logout {
   background: white;

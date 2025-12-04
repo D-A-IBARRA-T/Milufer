@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MILUFER</title>
   <link rel="stylesheet" href="{% static 'index.css' %}">
+  <link rel="icon" href="{% static 'img/milufer-icon.ico' %}" type="image/png">
 </head>
 <body>
   <header>
@@ -13,7 +14,7 @@
     <a href="{% url 'logout' %}">
       <form action="{% url 'logout' %}" method="post" style="display:inline;">
      {% csrf_token %}
-       <button type="submit" class="btn-header">Cerrar sesión</button>
+       <button type="submit" class="btn-principal">Cerrar sesión</button>
       </form>
     </a>
   </header>
