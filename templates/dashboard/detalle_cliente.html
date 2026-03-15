@@ -1,0 +1,48 @@
+{% extends "dashboard/dashboard.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/detalle_cliente.css' %}">
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="detalle-cliente-contenedor">
+
+    <h1>Detalle del Cliente</h1>
+
+    <div class="info-basica">
+        <p><strong>ID:</strong> {{ cliente.id }}</p>
+        <p><strong>Usuario:</strong> {{ cliente.username }}</p>
+        <p><strong>Correo electrónico:</strong> {{ cliente.email }}</p>
+        <p><strong>Nombres:</strong> {{ cliente.first_name }}</p>
+        <p><strong>Apellidos:</strong> {{ cliente.last_name }}</p>
+        <p><strong>Nombre completo:</strong> {{ cliente.get_full_name }}</p>
+        <p><strong>Activo:</strong> {{ cliente.is_active }}</p>
+    </div>
+
+    <div class="info-direcciones">
+        <h2>Direcciones del Cliente</h2>
+        {% if direcciones %}
+            {% for direccion in direcciones %}
+                <div class="tarjeta-direccion">
+                    <p><strong>Dirección:</strong> {{ direccion.direccion }}</p>
+                    <p><strong>Ciudad:</strong> {{ direccion.ciudad }}</p>
+                    {% if direccion.referencia %}
+                        <p><strong>Referencia:</strong> {{ direccion.referencia }}</p>
+                    {% endif %}
+                    {% if direccion.principal %}
+                        <span class="etiqueta-principal">Principal</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay direcciones registradas para este cliente.</p>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'dashboard:clientes' %}" class="boton-volver">← Volver</a>
+
+</div>
+
+{% endblock %}

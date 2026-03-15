@@ -1,0 +1,71 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'css/dashboard/clientes.css' %}">
+    <!-- ============================================= -->
+    <!--           GESTIÓN DE CLIENTES                -->
+    <!-- ============================================= -->
+    <div class="contenedor-clientes">
+
+        <!-- Título de la sección -->
+        <div class="encabezado-seccion">
+            <h1>Gestión de Clientes</h1>
+        </div>
+
+        {% if clientes %}
+            <!-- Hay clientes registrados → mostramos la tabla -->
+            <table class="tabla-clientes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Fecha de registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                        <tr>
+                            <!-- ID del usuario/cliente -->
+                            <td>{{ cliente.id }}</td>
+
+                            <!-- Nombre completo o username -->
+                            <td>
+                                {{ cliente.get_full_name|default:cliente.username }}
+                            </td>
+
+                            <!-- Correo electrónico -->
+                            <td>{{ cliente.email }}</td>
+
+                            <!-- Fecha en que se registró -->
+                            <td>{{ cliente.date_joined|date:"d/m/Y H:i" }}</td>
+
+                            <!-- Acciones: ver detalle y editar -->
+                            <td class="acciones">
+                                <a href="{% url 'dashboard:admin_detalle_cliente' cliente.id %}" 
+                                   class="boton-ver">
+                                    Ver
+                                </a>
+
+                                <a href="{% url 'dashboard:admin_editar_cliente' cliente.id %}" 
+                                   class="boton-editar">
+                                    Editar
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <!-- No hay clientes registrados -->
+            <div class="sin-clientes">
+                <p>Aún no hay clientes registrados en la tienda.</p>
+                <p>Cuando los usuarios creen cuenta aparecerán aquí.</p>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
