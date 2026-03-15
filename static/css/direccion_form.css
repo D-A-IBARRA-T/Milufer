@@ -1,0 +1,134 @@
+/* Importar tipografía Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* Contenedor principal */
+.contenedor-perfil {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 6px 24px rgba(233, 30, 99, 0.28);
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Encabezado */
+.contenedor-perfil h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e91e63;
+    text-shadow: 0 0 12px rgba(233, 30, 99, 0.38);
+    margin-bottom: 10px;
+}
+
+.contenedor-perfil p {
+    color: #d63384;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+/* Formulario */
+.formulario-registro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Campos */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    font-weight: 600;
+    color: #e91e63;
+}
+
+.campo input[type="text"],
+.campo input[type="checkbox"] {
+    padding: 12px 16px;
+    border: 2px solid #ffb3d9;
+    border-radius: 9999px;
+    font-size: 1rem;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Checkbox más compacto */
+.campo input[type="checkbox"] {
+    width: auto;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Focus */
+.campo input:focus {
+    outline: none;
+    border-color: #ff66b2;
+    box-shadow: 0 0 12px rgba(233, 30, 99, 0.38);
+}
+
+/* Botón guardar */
+.boton-registro {
+    background: #ff66b2;
+    color: #fff;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 24px rgba(233, 30, 99, 0.28);
+}
+
+.boton-registro:hover {
+    background: #e91e63;
+    transform: scale(1.05);
+    box-shadow: 0 12px 36px rgba(233, 30, 99, 0.38);
+}
+
+/* Enlace volver */
+.opcion-login {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.enlace-login {
+    color: #ff66b2;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enlace-login:hover {
+    color: #e91e63;
+    text-shadow: 0 0 8px rgba(233, 30, 99, 0.38);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contenedor-perfil {
+        padding: 24px;
+    }
+    .contenedor-perfil h1 {
+        font-size: 1.6rem;
+    }
+    .boton-registro {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-perfil {
+        margin: 20px;
+        padding: 20px;
+    }
+    .contenedor-perfil h1 {
+        font-size: 1.4rem;
+    }
+    .contenedor-perfil p {
+        font-size: 0.9rem;
+    }
+}
