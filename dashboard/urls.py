@@ -18,6 +18,7 @@ urlpatterns = [
     path("producto/nuevo/", views.admin_agregar_producto, name="admin_agregar_producto"),
     path("producto/editar/<int:producto_id>/", views.admin_editar_producto, name="admin_editar_producto"),
     path("producto/eliminar/<int:producto_id>/", views.admin_eliminar_producto, name="admin_eliminar_producto"),
+    path("producto/destacado/<int:producto_id>/", views.alternar_destacado_producto, name="alternar_destacado_producto"),
     
     path("clientes/<int:cliente_id>/", views.admin_detalle_cliente, name="admin_detalle_cliente"),
     path("clientes/editar/<int:cliente_id>/", views.admin_editar_cliente, name="admin_editar_cliente"),

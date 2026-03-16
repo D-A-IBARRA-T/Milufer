@@ -6,8 +6,9 @@ from .models import Producto, Categoria
 
 # Página de inicio
 def inicio(request):
-    # Seleccionamos algunos productos destacados (los primeros 5)
-    productos_destacados = Producto.objects.filter(activo=True)[:5]
+    productos_destacados = Producto.objects.filter(activo=True, destacado=True)[:5]
+    if not productos_destacados:
+        productos_destacados = Producto.objects.filter(activo=True)[:5]
     return render(request, "inicio.html", {"productos_destacados": productos_destacados})
 
 # Catálogo completo

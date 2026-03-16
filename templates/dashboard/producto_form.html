@@ -97,6 +97,13 @@
                 <small>(Deja en blanco si no quieres cambiar la imagen)</small>
             </div>
 
+
+            <div class="campo">
+                <label for="destacado">Producto destacado</label>
+                <input type="checkbox" name="destacado" id="destacado" {% if producto.destacado %}checked{% endif %}>
+                <small>Los productos destacados aparecen primero en la página de inicio.</small>
+            </div>
+
             <!-- Botón de guardar -->
             <div class="acciones-form">
                 <button type="submit" class="boton-guardar">
