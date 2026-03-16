@@ -1,0 +1,60 @@
+{% extends "dashboard/dashboard.html" %}
+{% load static %}
+{%load humanize %}
+$COP {{ producto.precio|intcomma }}
+
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'css/dashboard/detalle_pedido.css' %}">
+
+<div class="detalle-pedido-contenedor">
+    <h1>Detalle del Pedido #{{ pedido.id }}</h1>
+
+    <!-- Información del Cliente -->
+    <h2>Información del Cliente</h2>
+    <p><strong>Nombre:</strong> {{ cliente.get_full_name }}</p>
+    <p><strong>Usuario:</strong> {{ cliente.username }}</p>
+    <p><strong>Email:</strong> {{ cliente.email }}</p>
+
+    <!-- Dirección del Cliente -->
+    {% if direccion %}
+    <p><strong>Dirección:</strong> {{ direccion.direccion }}</p>
+    <p><strong>Ciudad:</strong> {{ direccion.ciudad }}</p>
+    {% if direccion.referencia %}
+    <p><strong>Referencia:</strong> {{ direccion.referencia }}</p>
+    {% endif %}
+    {% else %}
+    <p><strong>Dirección:</strong> No registrada</p>
+    {% endif %}
+
+    <!-- Productos del Pedido -->
+    <h2>Productos del Pedido</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in pedido.items.all %}
+            <tr>
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ item.precio|intcomma }}</td>
+                <td>${{ item.total|intcomma }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay productos en este pedido.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botón de Volver -->
+    <a href="{% url 'dashboard:pedidos' %}" class="btn">Volver a pedidos</a>
+</div>
+
+{% endblock %}
