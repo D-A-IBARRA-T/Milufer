@@ -1,109 +1,62 @@
 {% extends 'dashboard/dashboard.html' %}
-{% load static %}
-{% block dashboard_content %}
-{% load humanize %}
-{{ producto.precio|intcomma }}
+{% load static humanize %}
 
+{% block dashboard_content %}
 <link rel="stylesheet" href="{% static 'css/dashboard/estadisticas.css' %}">
 
-<!-- ================= VENTAS ================= -->
 <section>
-  <h2>📊 Ventas</h2>
+  <h1>Estadísticas de la Tienda</h1>
   <div class="grid">
-    <div class="tarjeta">Ventas Totales: ${{ ventas_totales|intcomma }}</div>
-    <div class="tarjeta">Ventas Mes: ${{ ventas_mes|intcomma }}</div>
-    <div class="tarjeta">Ventas Año: ${{ ventas_anio|intcomma }}</div>
-    <div class="tarjeta">Ticket Medio: ${{ ticket_medio|intcomma }}</div>
-    <div class="tarjeta">Total Pedidos: {{ total_pedidos }}</div>
+    <div class="tarjeta"><strong>Ingresos Totales</strong><br>$ {{ ingresos_totales|floatformat:2|intcomma }}</div>
+    <div class="tarjeta"><strong>Ventas del Mes</strong><br>$ {{ ventas_mes|floatformat:2|intcomma }}</div>
+    <div class="tarjeta"><strong>Pedidos Totales</strong><br>{{ total_pedidos }}</div>
+    <div class="tarjeta"><strong>Clientes Registrados</strong><br>{{ total_clientes }}</div>
+    <div class="tarjeta"><strong>Productos Registrados</strong><br>{{ total_productos }}</div>
+    <div class="tarjeta"><strong>Promedio por Venta</strong><br>$ {{ promedio_ventas_dia|floatformat:2|intcomma }}</div>
   </div>
+</section>
 
-  <h3>🔥 Top Productos Vendidos</h3>
+<section>
+  <h2>Productos Más Vendidos</h2>
   <ul>
-    {% for p in productos_top %}
-      <li>{{ p.nombre }} - Vendidos: {{ p.unidades_vendidas }} - Ingresos: ${{ p.ingresos|intcomma }}</li>
+    {% for p in productos_mas_vendidos %}
+      <li>{{ p.producto__nombre }} — {{ p.unidades_vendidas }} unidades — $ {{ p.ingresos|floatformat:2|intcomma }}</li>
+    {% empty %}
+      <li>No hay ventas registradas.</li>
     {% endfor %}
   </ul>
+</section>
 
-  <h3>🕒 Pedidos recientes</h3>
+<section>
+  <h2>Productos con Menos Ventas</h2>
+  <ul>
+    {% for p in productos_menos_vendidos %}
+      <li>{{ p.producto__nombre }} — {{ p.unidades_vendidas }} unidades</li>
+    {% empty %}
+      <li>No hay datos de ventas para analizar.</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Productos Destacados Más Vendidos</h2>
+  <ul>
+    {% for p in destacados_mas_vendidos %}
+      <li>{{ p.producto__nombre }} — {{ p.unidades_vendidas }} unidades</li>
+    {% empty %}
+      <li>No hay productos destacados con ventas aún.</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Pedidos Recientes</h2>
   <ul>
     {% for pedido in pedidos_recientes %}
-      <li>Pedido #{{ pedido.id }} - {{ pedido.usuario.username }} - ${{ pedido.total }}</li>
+      <li>Pedido #{{ pedido.id }} — {{ pedido.usuario.username|default:"Cliente eliminado" }} — $ {{ pedido.total|intcomma }}</li>
+    {% empty %}
+      <li>No hay pedidos recientes.</li>
     {% endfor %}
   </ul>
-
-  <!-- Gráfico de ventas por mes -->
-  <canvas id="ventasChart"></canvas>
 </section>
-
-<!-- ================= CLIENTES ================= -->
-<section>
-  <h2>👥 Clientes</h2>
-  <div class="grid">
-    <div class="tarjeta">Total Clientes: {{ total_clientes }}</div>
-    <div class="tarjeta">Clientes Nuevos Mes: {{ clientes_mes }}</div>
-    <div class="tarjeta">Recurrentes: {{ clientes_recurrentes }}</div>
-    <div class="tarjeta">Nuevos: {{ clientes_nuevos }}</div>
-  </div>
-
-  <!-- Gráfico de clientes -->
-  <canvas id="clientesChart"></canvas>
-</section>
-
-<!-- ================= INVENTARIO ================= -->
-<section>
-  <h2>📦 Inventario</h2>
-  <div class="grid">
-    <div class="tarjeta">Productos Totales: {{ productos_totales }}</div>
-    <div class="tarjeta">Activos: {{ productos_activos }}</div>
-    <div class="tarjeta">Inactivos: {{ productos_inactivos }}</div>
-    <div class="tarjeta">Agotados: {{ productos_agotados }}</div>
-    <div class="tarjeta">Bajo Stock: {{ productos_bajo_stock }}</div>
-    <div class="tarjeta">Valor Inventario: ${{ valor_total_inventario|intcomma }}</div>
-  </div>
-
-  <!-- Gráfico de stock por categoría -->
-  <canvas id="stockChart"></canvas>
-</section>
-
-<!-- ================= ALERTAS ================= -->
-<section>
-  <h2>⚠️ Alertas</h2>
-  <div class="grid">
-    <div class="tarjeta">Productos sin ventas: {{ sin_ventas.count }}</div>
-    <div class="tarjeta">Pedidos pendientes: {{ pedidos_pendientes.count }}</div>
-  </div>
-</section>
-
-<!-- ================= CHART.JS ================= -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  // Gráfico de ventas
-  const ventasCtx = document.getElementById('ventasChart').getContext('2d');
-  new Chart(ventasCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Totales', 'Mes', 'Año'],
-      datasets: [{
-        label: 'Ventas ($)',
-        data: [{{ ventas_totales }}, {{ ventas_mes }}, {{ ventas_anio }}],
-        backgroundColor: ['#4CAF50','#2196F3','#FFC107']
-      }]
-    }
-  });
-
-  // Gráfico de clientes
-  const clientesCtx = document.getElementById('clientesChart').getContext('2d');
-  new Chart(clientesCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Recurrentes', 'Nuevos'],
-      datasets: [{
-        data: [{{ clientes_recurrentes }}, {{ clientes_nuevos }}],
-        backgroundColor: ['#FF5722','#9C27B0']
-      }]
-    }
-  });
-
-</script>
-
 {% endblock %}
