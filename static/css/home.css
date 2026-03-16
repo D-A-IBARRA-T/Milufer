@@ -1,0 +1,279 @@
+/* ================================================
+   home.css (o base.css) – Estilo completo del sitio
+   Vibe ultra vibrante pink/hot magenta – 2026
+   Paleta principal: #ff99cc, #ff66b2, #e91e63, #ffb3d9, #d63384
+   Última actualización: iconos de redes sociales simplificados y brillantes
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Colores ultra vivos */
+  --pink-hot:        #ff66b2;     /* botones principales, hover fuerte */
+  --pink-deep:       #e91e63;     /* acentos intensos, precios, títulos */
+  --pink-medium:     #ff99cc;     /* header, footer, bordes */
+  --pink-border:     #ffb3d9;     /* bordes suaves, focus */
+  --pink-bg-start:   #ffeaf6;     /* fondo gradiente claro */
+  --pink-bg-end:     #fdf2fb;     /* fondo gradiente más suave */
+  --pink-glow:       #ffccdd;     /* glows y fondos hero */
+  --text-pink:       #d63384;     /* textos destacados */
+  --text-dark:       #222;
+  --white:           #ffffff;
+
+  /* Efectos */
+  --radius-pill:     9999px;
+  --radius-md:       16px;
+  --transition-pop:  all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.18s ease-out;
+  --shadow-glow:     0 6px 24px rgba(233, 30, 99, 0.28);
+  --shadow-hover:    0 12px 36px rgba(233, 30, 99, 0.38);
+  --glow-text:       0 3px 16px rgba(233, 30, 99, 0.22);
+}
+
+/* Reset + base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--pink-bg-start) 0%, var(--pink-bg-end) 100%);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Contenedor principal */
+.contenedor {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1.8rem;
+}
+
+/* Header + Navbar */
+header {
+  background: var(--pink-medium);
+  color: white;
+  padding: 1.4rem 0;
+  box-shadow: 0 6px 25px rgba(255, 102, 178, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+header .contenedor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+header h1 {
+  font-size: clamp(2.1rem, 6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+header h1 a {
+  color: white;
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-pill);
+  transition: var(--transition-pop);
+  background: rgba(255,255,255,0.15);
+}
+
+nav a:hover,
+nav a:focus {
+  background: white;
+  color: var(--pink-deep);
+  transform: scale(1.12) translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Hero / Bienvenida */
+.bienvenida {
+  text-align: center;
+  padding: clamp(120px, 22vh, 200px) 1.8rem clamp(90px, 18vh, 160px);
+  background: linear-gradient(135deg, var(--pink-glow) 0%, var(--pink-bg-start) 50%, var(--pink-bg-end) 100%);
+  position: relative;
+}
+
+.bienvenida::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255,102,178,0.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.bienvenida h1 {
+  font-size: clamp(3.8rem, 10vw, 7rem);
+  font-weight: 800;
+  color: var(--pink-deep);
+  margin-bottom: 2rem;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  text-shadow: var(--glow-text);
+}
+
+.bienvenida p {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+  color: #333;
+  max-width: 900px;
+  margin: 0 auto;
+  font-weight: 500;
+}
+
+/* Footer */
+footer {
+  background: var(--pink-medium);
+  color: white;
+  padding: 5rem 0 3.5rem;
+  margin-top: 7rem;
+  text-align: center;
+  box-shadow: 0 -8px 35px rgba(255,102,178,0.25);
+}
+
+footer p {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+footer .copyright {
+  margin-top: 2.5rem;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+/* Redes sociales – versión que te gustaba más (blancos brillantes, fill en hover) */
+.redes-sociales {
+  margin: 2.2rem 0 2.8rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+}
+
+.redes-sociales a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  font-size: 1.8rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 12px rgba(233, 30, 99, 0.18);
+}
+
+.redes-sociales a:hover,
+.redes-sociales a:focus {
+  background: var(--pink-hot);
+  transform: translateY(-5px) scale(1.10);
+  box-shadow: 0 10px 28px rgba(233, 30, 99, 0.35);
+  color: white;
+}
+
+/* Colores específicos por red en hover */
+.redes-sociales a[href*="instagram.com"]:hover,
+.redes-sociales a[href*="instagram"]:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.redes-sociales a[href*="facebook.com"]:hover,
+.redes-sociales a[href*="facebook"]:hover {
+  background: #1877F2;
+}
+
+.redes-sociales a[href*="tiktok.com"]:hover,
+.redes-sociales a[href*="tiktok"]:hover {
+  background: #000000;
+}
+
+.redes-sociales a[href*="whatsapp.com"]:hover,
+.redes-sociales a[href*="wa.me"]:hover {
+  background: #25D366;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  header .contenedor {
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+  
+  nav ul {
+    gap: 1.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .bienvenida {
+    padding: 90px 1.2rem 120px;
+  }
+  
+  nav a {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
+  
+  .redes-sociales {
+    gap: 1.2rem;
+  }
+  
+  .redes-sociales a {
+    width: 48px;
+    height: 48px;
+    font-size: 1.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2.2rem;
+  }
+  
+  nav a {
+    font-size: 0.98rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .bienvenida h1 {
+    font-size: clamp(2.8rem, 11vw, 4.2rem);
+  }
+  
+  .bienvenida p {
+    font-size: 1.15rem;
+  }
+  
+  .redes-sociales a {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+}

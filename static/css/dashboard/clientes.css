@@ -1,0 +1,142 @@
+/* Importar tipografía Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* Contenedor principal */
+.contenedor-clientes {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 6px 24px rgba(233, 30, 99, 0.28);
+    margin: 40px auto;
+    max-width: 1200px;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Encabezado */
+.encabezado-seccion {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.encabezado-seccion h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e91e63;
+    text-shadow: 0 0 12px rgba(233, 30, 99, 0.38);
+}
+
+/* Tabla de clientes */
+.tabla-clientes {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(233, 30, 99, 0.18);
+}
+
+.tabla-clientes thead {
+    background: #ff99cc;
+    color: #fff;
+}
+
+.tabla-clientes th, 
+.tabla-clientes td {
+    padding: 14px 18px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.tabla-clientes tbody tr:nth-child(even) {
+    background: #fdf2fb;
+}
+
+.tabla-clientes tbody tr:hover {
+    background: #ffeaf6;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Acciones */
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.boton-ver, .boton-editar {
+    padding: 8px 14px;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.boton-ver {
+    background: #ffb3d9;
+    color: #333;
+}
+
+.boton-ver:hover {
+    background: #ff66b2;
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(233, 30, 99, 0.28);
+}
+
+.boton-editar {
+    background: #e91e63;
+    color: #fff;
+}
+
+.boton-editar:hover {
+    background: #d63384;
+    transform: scale(1.05);
+    box-shadow: 0 12px 36px rgba(233, 30, 99, 0.38);
+}
+
+/* Estado sin clientes */
+.sin-clientes {
+    text-align: center;
+    padding: 40px;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+    .contenedor-clientes {
+        padding: 30px;
+    }
+    .encabezado-seccion h1 {
+        font-size: 1.8rem;
+    }
+    .tabla-clientes th, .tabla-clientes td {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tabla-clientes th, .tabla-clientes td {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    .acciones {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-clientes {
+        margin: 20px;
+        padding: 20px;
+    }
+    .encabezado-seccion h1 {
+        font-size: 1.4rem;
+    }
+    .acciones {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .boton-ver, .boton-editar {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
