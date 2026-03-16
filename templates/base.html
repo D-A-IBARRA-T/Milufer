@@ -41,6 +41,9 @@
                         <li><a href="{% url 'usuarios:login' %}">Iniciar sesión</a></li>
                         <li><a href="{% url 'usuarios:registro' %}">Registrarse</a></li>
                     {% endif %}
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url 'dashboard:home' %}">Panel Admin</a></li>
+                    {% endif %}
                 </ul>
         </div>
     </header>
