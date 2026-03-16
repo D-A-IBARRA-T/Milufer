@@ -4,8 +4,8 @@ from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from django.db.models import Count, DecimalField, ExpressionWrapper, F, Sum
-from django.db.models.functions import Coalesce
+from django.db.models import DecimalField, ExpressionWrapper, F, Sum
+from django.db.models.functions import Coalesce, TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -113,6 +113,7 @@ def estadisticas_view(request):
 
     total_productos = Producto.objects.count()
     total_pedidos = pedidos_qs.count()
+    total_ventas = pedidos_confirmados.count()
     total_clientes = User.objects.count()
 
     ingresos_totales = pedidos_confirmados.aggregate(total=Coalesce(Sum("total"), Decimal("0.00")))["total"]
@@ -120,15 +121,22 @@ def estadisticas_view(request):
         total=Coalesce(Sum("total"), Decimal("0.00"))
     )["total"]
 
-    total_pedidos_confirmados = pedidos_confirmados.count()
-    promedio_ventas_dia = ingresos_totales / total_pedidos_confirmados if total_pedidos_confirmados else Decimal("0.00")
+    dias_con_ventas = (
+        pedidos_confirmados.annotate(dia=TruncDate("fecha_creacion")).values("dia").distinct().count()
+    )
+    promedio_ventas_dia = ingresos_totales / dias_con_ventas if dias_con_ventas else Decimal("0.00")
 
     detalle_ventas = (
         PedidoProducto.objects.values("producto__id", "producto__nombre", "producto__destacado")
         .annotate(
             unidades_vendidas=Coalesce(Sum("cantidad"), 0),
             ingresos=Coalesce(
-                Sum(ExpressionWrapper(F("cantidad") * F("precio"), output_field=DecimalField(max_digits=12, decimal_places=2))),
+                Sum(
+                    ExpressionWrapper(
+                        F("cantidad") * F("precio"),
+                        output_field=DecimalField(max_digits=12, decimal_places=2),
+                    )
+                ),
                 Decimal("0.00"),
             ),
         )
@@ -137,7 +145,9 @@ def estadisticas_view(request):
 
     productos_mas_vendidos = list(detalle_ventas[:5])
     productos_menos_vendidos = list(detalle_ventas.order_by("unidades_vendidas", "producto__nombre")[:5])
-    destacados_mas_vendidos = [item for item in productos_mas_vendidos if item["producto__destacado"]]
+    destacados_mas_vendidos = list(
+        detalle_ventas.filter(producto__destacado=True).order_by("-unidades_vendidas", "producto__nombre")[:5]
+    )
 
     pedidos_recientes = pedidos_qs.select_related("usuario").order_by("-fecha_creacion")[:5]
 
@@ -147,10 +157,12 @@ def estadisticas_view(request):
         {
             "total_productos": total_productos,
             "total_pedidos": total_pedidos,
+            "total_ventas": total_ventas,
             "total_clientes": total_clientes,
             "ingresos_totales": ingresos_totales,
             "ventas_mes": ventas_mes,
             "promedio_ventas_dia": promedio_ventas_dia,
+            "dias_con_ventas": dias_con_ventas,
             "productos_mas_vendidos": productos_mas_vendidos,
             "productos_menos_vendidos": productos_menos_vendidos,
             "destacados_mas_vendidos": destacados_mas_vendidos,
