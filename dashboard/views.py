@@ -18,7 +18,7 @@ def superuser_required(view_func):
 # -------------------------------
 @superuser_required
 def productos_view(request):
-    productos = Producto.objects.all()
+    productos = Producto.objects.all().order_by("-destacado", "nombre")
     return render(request, "dashboard/productos.html", {"productos": productos})
 
 @superuser_required
@@ -47,6 +47,21 @@ def admin_editar_producto(request, producto_id):
         form = ProductoForm(instance=producto)
     categorias = Categoria.objects.all()
     return render(request, "dashboard/producto_form.html", {"form": form, "categorias": categorias, "producto": producto})
+
+
+
+@superuser_required
+def alternar_destacado_producto(request, producto_id):
+    if request.method != "POST":
+        return redirect("dashboard:productos")
+
+    producto = get_object_or_404(Producto, id=producto_id)
+    producto.destacado = not producto.destacado
+    producto.save(update_fields=["destacado"])
+
+    estado = "destacado" if producto.destacado else "normal"
+    messages.success(request, f"{producto.nombre} ahora está marcado como {estado}.")
+    return redirect("dashboard:productos")
 
 @superuser_required
 def admin_eliminar_producto(request, producto_id):

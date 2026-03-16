@@ -22,9 +22,9 @@
         <div class="contenedor">
             <h2>Productos destacados</h2>
 
-            {% if productos %}
+            {% if productos_destacados %}
                 <div class="grid-productos">
-                    {% for producto in productos %}
+                    {% for producto in productos_destacados %}
                         <article class="tarjeta-producto">
                             <!-- Imagen -->
                             <div class="imagen-contenedor">
@@ -34,8 +34,8 @@
                             <!-- Contenido -->
                             <div class="contenido-tarjeta">
                                 <h3>{{ producto.nombre }}</h3>
-                                <div class="precio">{{ producto.precio }} €</div>
-                                <a href="{% url 'producto_detalle' producto.id %}" class="boton-ver">
+                                <div class="precio">{{ producto.precio }} COP</div>
+                                <a href="{% url 'productos:producto_detalle' producto.id %}" class="boton-ver">
                                     Ver producto
                                 </a>
                             </div>
