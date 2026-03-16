@@ -1,29 +1,37 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from productos.models import Producto, Categoria
-from usuarios.models import User
-from ventas.models import Pedido, PedidoProducto
-from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Avg, Count
-from django.contrib.auth.decorators import user_passes_test
-from django.utils import timezone
+from decimal import Decimal
+
 from django import forms
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from django.db.models import Count, DecimalField, ExpressionWrapper, F, Sum
+from django.db.models.functions import Coalesce
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
+from productos.models import Categoria, Producto
 from usuarios.models import Direccion
+from ventas.models import Pedido, PedidoProducto
+
 
 # Decorador que restringe a superusuarios
 def superuser_required(view_func):
     return user_passes_test(lambda u: u.is_superuser)(view_func)
+
 
 # -------------------------------
 # Productos
 # -------------------------------
 @superuser_required
 def productos_view(request):
-    productos = Producto.objects.all()
+    productos = Producto.objects.select_related("categoria").all().order_by("-creado")
     return render(request, "dashboard/productos.html", {"productos": productos})
+
 
 @superuser_required
 def admin_agregar_producto(request):
     from .forms import ProductoForm
+
     if request.method == "POST":
         form = ProductoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -31,12 +39,14 @@ def admin_agregar_producto(request):
             return redirect("dashboard:productos")
     else:
         form = ProductoForm()
-    categorias = Categoria.objects.all()
-    return render(request, "dashboard/producto_form.html", {"form": form, "categorias": categorias})
+
+    return render(request, "dashboard/producto_form.html", {"form": form})
+
 
 @superuser_required
 def admin_editar_producto(request, producto_id):
     from .forms import ProductoForm
+
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == "POST":
         form = ProductoForm(request.POST, request.FILES, instance=producto)
@@ -45,14 +55,16 @@ def admin_editar_producto(request, producto_id):
             return redirect("dashboard:productos")
     else:
         form = ProductoForm(instance=producto)
-    categorias = Categoria.objects.all()
-    return render(request, "dashboard/producto_form.html", {"form": form, "categorias": categorias, "producto": producto})
+
+    return render(request, "dashboard/producto_form.html", {"form": form, "producto": producto})
+
 
 @superuser_required
 def admin_eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     producto.delete()
     return redirect("dashboard:productos")
+
 
 # -------------------------------
 # Clientes
@@ -62,15 +74,18 @@ class ClienteForm(forms.ModelForm):
         model = User
         fields = ["username", "email", "first_name", "last_name", "is_active"]
 
+
 @superuser_required
 def clientes_view(request):
     clientes = User.objects.all().order_by("-date_joined")
     return render(request, "dashboard/clientes.html", {"clientes": clientes})
 
+
 @superuser_required
 def admin_detalle_cliente(request, cliente_id):
     cliente = get_object_or_404(User, id=cliente_id)
     return render(request, "dashboard/detalle_cliente.html", {"cliente": cliente})
+
 
 @superuser_required
 def admin_editar_cliente(request, cliente_id):
@@ -84,83 +99,65 @@ def admin_editar_cliente(request, cliente_id):
         form = ClienteForm(instance=cliente)
     return render(request, "dashboard/editar_cliente.html", {"form": form, "cliente": cliente})
 
+
 # -------------------------------
 # Estadísticas completas
 # -------------------------------
 @superuser_required
 def estadisticas_view(request):
-    hoy = timezone.now().date()
-    mes = timezone.now().month
-    anio = timezone.now().year
+    now = timezone.now()
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
-    # Ventas
-    ventas_totales = Pedido.objects.aggregate(Sum("total"))["total__sum"] or 0
-    total_pedidos = Pedido.objects.count()
-    ticket_medio = ventas_totales / total_pedidos if total_pedidos > 0 else 0
-    ventas_mes = Pedido.objects.filter(fecha_creacion__month=mes).aggregate(Sum("total"))["total__sum"] or 0
-    ventas_anio = Pedido.objects.filter(fecha_creacion__year=anio).aggregate(Sum("total"))["total__sum"] or 0
+    pedidos_qs = Pedido.objects.all()
+    pedidos_confirmados = pedidos_qs.filter(estado="confirmado")
 
-    productos_top = (
-        Producto.objects.annotate(
-            unidades_vendidas=Sum("pedidoproducto__cantidad"),
-            ingresos=Sum(
-                ExpressionWrapper(
-                    F("pedidoproducto__cantidad") * F("pedidoproducto__precio"),
-                    output_field=DecimalField()
-                )
+    total_productos = Producto.objects.count()
+    total_pedidos = pedidos_qs.count()
+    total_clientes = User.objects.count()
+
+    ingresos_totales = pedidos_confirmados.aggregate(total=Coalesce(Sum("total"), Decimal("0.00")))["total"]
+    ventas_mes = pedidos_confirmados.filter(fecha_creacion__gte=month_start).aggregate(
+        total=Coalesce(Sum("total"), Decimal("0.00"))
+    )["total"]
+
+    total_pedidos_confirmados = pedidos_confirmados.count()
+    promedio_ventas_dia = ingresos_totales / total_pedidos_confirmados if total_pedidos_confirmados else Decimal("0.00")
+
+    detalle_ventas = (
+        PedidoProducto.objects.values("producto__id", "producto__nombre", "producto__destacado")
+        .annotate(
+            unidades_vendidas=Coalesce(Sum("cantidad"), 0),
+            ingresos=Coalesce(
+                Sum(ExpressionWrapper(F("cantidad") * F("precio"), output_field=DecimalField(max_digits=12, decimal_places=2))),
+                Decimal("0.00"),
             ),
         )
-        .filter(unidades_vendidas__gt=0)
-        .order_by("-unidades_vendidas")[:5]
+        .order_by("-unidades_vendidas", "producto__nombre")
     )
 
-    pedidos_recientes = Pedido.objects.order_by("-fecha_creacion")[:5]
+    productos_mas_vendidos = list(detalle_ventas[:5])
+    productos_menos_vendidos = list(detalle_ventas.order_by("unidades_vendidas", "producto__nombre")[:5])
+    destacados_mas_vendidos = [item for item in productos_mas_vendidos if item["producto__destacado"]]
 
-    # Clientes
-    total_clientes = User.objects.count()
-    clientes_mes = User.objects.filter(date_joined__month=mes).count()
-    clientes_recurrentes = User.objects.annotate(num_pedidos=Count("pedido")).filter(num_pedidos__gt=1).count()
-    clientes_nuevos = User.objects.annotate(num_pedidos=Count("pedido")).filter(num_pedidos=1).count()
+    pedidos_recientes = pedidos_qs.select_related("usuario").order_by("-fecha_creacion")[:5]
 
-    # Inventario
-    productos_totales = Producto.objects.count()
-    productos_activos = Producto.objects.filter(activo=True).count()
-    productos_inactivos = Producto.objects.filter(activo=False).count()
-    productos_agotados = Producto.objects.filter(stock=0).count()
-    productos_bajo_stock = Producto.objects.filter(stock__lt=5).count()
-    valor_total_inventario = Producto.objects.aggregate(valor=Sum(F("stock") * F("precio")))["valor"] or 0
-    stock_por_categoria = Categoria.objects.annotate(total_stock=Sum("productos__stock"))
+    return render(
+        request,
+        "dashboard/estadisticas.html",
+        {
+            "total_productos": total_productos,
+            "total_pedidos": total_pedidos,
+            "total_clientes": total_clientes,
+            "ingresos_totales": ingresos_totales,
+            "ventas_mes": ventas_mes,
+            "promedio_ventas_dia": promedio_ventas_dia,
+            "productos_mas_vendidos": productos_mas_vendidos,
+            "productos_menos_vendidos": productos_menos_vendidos,
+            "destacados_mas_vendidos": destacados_mas_vendidos,
+            "pedidos_recientes": pedidos_recientes,
+        },
+    )
 
-    # Alertas
-    sin_ventas = Producto.objects.filter(pedidoproducto__isnull=True)
-    pedidos_pendientes = Pedido.objects.filter(estado="pendiente", expiracion__lt=timezone.now())
-
-    return render(request, "dashboard/estadisticas.html", {
-        # Ventas
-        "ventas_totales": ventas_totales,
-        "ventas_mes": ventas_mes,
-        "ventas_anio": ventas_anio,
-        "total_pedidos": total_pedidos,
-        "ticket_medio": ticket_medio,
-        "productos_top": productos_top,
-        "pedidos_recientes": pedidos_recientes,
-        # Clientes
-        "total_clientes": total_clientes,
-        "clientes_mes": clientes_mes,
-        "clientes_recurrentes": clientes_recurrentes,
-        "clientes_nuevos": clientes_nuevos,
-        # Inventario
-        "productos_totales": productos_totales,
-        "productos_activos": productos_activos,
-        "productos_inactivos": productos_inactivos,
-        "productos_agotados": productos_agotados,
-        "productos_bajo_stock": productos_bajo_stock,
-        "valor_total_inventario": valor_total_inventario,
-        "stock_por_categoria": stock_por_categoria,
-        # Alertas
-        "sin_ventas": sin_ventas,
-        "pedidos_pendientes": pedidos_pendientes,
-    })
 
 # -------------------------------
 # Pedidos
@@ -170,33 +167,39 @@ def pedidos_view(request):
     pedidos = Pedido.objects.all().order_by("-fecha_creacion")
     return render(request, "dashboard/pedidos.html", {"pedidos": pedidos})
 
+
 @superuser_required
 def detalle_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
-    cliente = pedido.usuario  # Suponiendo que tu modelo Pedido tiene 'usuario = ForeignKey(User)'
-    
-    # Obtener la dirección principal del cliente (si existe)
-    direccion = Direccion.objects.filter(usuario=cliente, principal=True).first()
-    
-    return render(request, "dashboard/detalle_pedido.html", {
-        "pedido": pedido,
-        "cliente": cliente,
-        "direccion": direccion,
-    })
+    cliente = pedido.usuario
+    direccion = Direccion.objects.filter(usuario=cliente, principal=True).first() if cliente else None
+
+    return render(
+        request,
+        "dashboard/detalle_pedido.html",
+        {
+            "pedido": pedido,
+            "cliente": cliente,
+            "direccion": direccion,
+        },
+    )
+
+
 @superuser_required
 def confirmar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
     for item in pedido.items.all():
-        productos = item.producto
-        if productos.stock >= item.cantidad:
-            productos.stock -= item.cantidad
-            productos.save()
+        producto = item.producto
+        if producto.stock >= item.cantidad:
+            producto.stock -= item.cantidad
+            producto.save()
         else:
-            messages.error(request, f"Stock insuficiente para {productos.nombre}")
+            messages.error(request, f"Stock insuficiente para {producto.nombre}")
             return redirect("dashboard:pedidos")
     pedido.estado = "confirmado"
     pedido.save()
     return redirect("dashboard:pedidos")
+
 
 @superuser_required
 def cancelar_pedido(request, pedido_id):
@@ -204,6 +207,7 @@ def cancelar_pedido(request, pedido_id):
     pedido.estado = "cancelado"
     pedido.save()
     return redirect("dashboard:pedidos")
+
 
 # -------------------------------
 # Dashboard principal

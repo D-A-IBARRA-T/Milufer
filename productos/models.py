@@ -23,6 +23,7 @@ class Producto(models.Model):
     stock = models.PositiveIntegerField(default=0)
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
     activo = models.BooleanField(default=True)
+    destacado = models.BooleanField(default=False)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
 

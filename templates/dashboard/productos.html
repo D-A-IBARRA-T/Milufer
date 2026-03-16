@@ -25,6 +25,7 @@ $COP {{ producto.precio|intcomma }}
                     <th>Nombre</th>
                     <th>Precio</th>
                     <th>Stock</th>
+                    <th>Destacado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@ $COP {{ producto.precio|intcomma }}
                                 <span class="sin-stock">Agotado</span>
                             {% endif %}
                         </td>
+                        <td>{% if producto.destacado %}⭐ Sí{% else %}No{% endif %}</td>
                         <td class="acciones">
                             <a href="{% url 'dashboard:admin_editar_producto' producto.id %}" 
                                class="boton-editar">Editar</a>
