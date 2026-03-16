@@ -1,0 +1,115 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard/producto_form.css' %}">
+    <!-- ============================================= -->
+    <!--     FORMULARIO PARA AGREGAR / EDITAR PRODUCTO -->
+    <!-- ============================================= -->
+    <div class="contenedor-formulario">
+
+        <!-- Título dinámico: cambia según si es agregar o editar -->
+        {% if producto.id %}
+            <h1>Editar Producto</h1>
+            <p>Modifica los datos del producto: {{ producto.nombre }}</p>
+        {% else %}
+            <h1>Agregar Nuevo Producto</h1>
+            <p>Completa la información para añadir un producto a la tienda</p>
+        {% endif %}
+
+        <!-- Formulario principal -->
+        <form method="post" enctype="multipart/form-data" class="formulario-producto">
+
+            {% csrf_token %}
+
+            <!-- Campo: Nombre del producto -->
+            <div class="campo">
+                <label for="nombre">Nombre del producto</label>
+                <input type="text" 
+                       name="nombre" 
+                       id="nombre" 
+                       value="{{ producto.nombre|default:'' }}" 
+                       placeholder="Ej: Collar Perla Elegante" 
+                       required>
+            </div>
+
+            <!-- Campo: Descripción -->
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" 
+                          id="descripcion" 
+                          rows="6" 
+                          placeholder="Describe el producto, materiales, medidas, etc...">
+{{ producto.descripcion|default:'' }}</textarea>
+            </div>
+            <!-- Campo: Categoría -->
+<div class="campo">
+    <label for="categoria">Categoría</label>
+    <select name="categoria" id="categoria" required>
+        {% for cat in categorias %}
+            <option value="{{ cat.id }}" {% if producto.categoria_id == cat.id %}selected{% endif %}>
+                {{ cat.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+
+            <!-- Campo: Precio -->
+            <div class="campo">
+                <label for="precio">Precio (COP)</label>
+                <input type="number" 
+                       name="precio" 
+                       id="precio" 
+                       step="0.01" 
+                       min="0" 
+                       value="{{ producto.precio|default:'' }}" 
+                       placeholder="Ej: 14.000" 
+                       required>
+            </div>
+
+            <!-- Campo: Stock / Cantidad disponible -->
+            <div class="campo">
+                <label for="stock">Stock disponible</label>
+                <input type="number" 
+                       name="stock" 
+                       id="stock" 
+                       min="0" 
+                       value="{{ producto.stock|default:0 }}" 
+                       required>
+            </div>
+
+            <!-- Campo: Imagen -->
+            <div class="campo">
+                <label for="imagen">Imagen del producto</label>
+                
+                {% if producto.imagen %}
+                    <div class="imagen-actual">
+                        <p>Imagen actual:</p>
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width: 200px; border-radius: 8px;">
+                    </div>
+                {% endif %}
+                
+                <input type="file" 
+                       name="imagen" 
+                       id="imagen" 
+                       accept="image/*">
+                <small>(Deja en blanco si no quieres cambiar la imagen)</small>
+            </div>
+
+            <!-- Botón de guardar -->
+            <div class="acciones-form">
+                <button type="submit" class="boton-guardar">
+                    Guardar Producto
+                </button>
+                
+                <a href="{% url 'dashboard:productos' %}" class="boton-cancelar">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+{% endblock %}

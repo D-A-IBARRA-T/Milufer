@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
+
+
+<div class="dashboard-contenedor">
+
+    <!-- Menú lateral -->
+    <aside class="dashboard-menu">
+        <h2>Panel de Administración</h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard:productos' %}">📦 Productos</a></li>
+                <li><a href="{% url 'dashboard:clientes' %}">👥 Clientes</a></li>
+                <li><a href="{% url 'dashboard:pedidos' %}">🛒 Pedidos</a></li>
+                <li><a href="{% url 'dashboard:estadisticas' %}">📊 Estadísticas</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenido dinámico -->
+    <main class="dashboard-contenido">
+        {% block dashboard_content %}
+        <!-- Aquí se cargará el contenido de cada sección -->
+        <h1>Bienvenido al Panel de Administración</h1>
+        <p>Selecciona una opción del menú para gestionar la tienda.</p>
+        {% endblock %}
+    </main>
+
+</div>
+{% endblock %}
