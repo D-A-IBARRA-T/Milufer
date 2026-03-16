@@ -1,0 +1,90 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'css/dashboard/pedidos.css' %}">
+
+<!-- ============================================= -->
+<!--           GESTIÓN DE PEDIDOS                 -->
+<!-- ============================================= -->
+<div class="contenedor-pedidos">
+
+    <!-- Título de la sección -->
+    <div class="encabezado-seccion">
+        <h1>Gestión de Pedidos</h1>
+    </div>
+
+    {% if pedidos %}
+        <!-- Hay pedidos → mostramos la tabla -->
+        <table class="tabla-pedidos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                    <tr>
+                        <!-- ID del pedido -->
+                        <td>#{{ pedido.id }}</td>
+
+                        <!-- Nombre o email del cliente -->
+                        <td>
+                            {{ pedido.usuario.username|default:pedido.usuario.email }}
+                        </td>
+
+                        <!-- Fecha del pedido -->
+                        <td>{{ pedido.fecha_creacion|date:"d/m/Y H:i" }}</td>
+
+                        <!-- Total del pedido -->
+                        <td>{{ pedido.total }} COP</td>
+
+                        <!-- Estado del pedido -->
+                        <td>
+                            <span class="estado estado-{{ pedido.estado|lower }}">
+                                {{ pedido.get_estado_display|default:pedido.estado }}
+                            </span>
+                        </td>
+
+                        <!-- Acciones -->
+                        <td class="acciones">
+                            <!-- Ver detalle -->
+                            <a href="{% url 'dashboard:admin_detalle_pedido' pedido.id %}" 
+                               class="boton-ver">
+                                Ver
+                            </a>
+
+                            {% if pedido.estado == "pendiente" %}
+                                <!-- Confirmar -->
+                                <a href="{% url 'dashboard:admin_confirmar_pedido' pedido.id %}" 
+                                   class="boton-confirmar">
+                                    Confirmar
+                                </a>
+
+                                <!-- Cancelar -->
+                                <a href="{% url 'dashboard:admin_cancelar_pedido' pedido.id %}" 
+                                   class="boton-cancelar">
+                                    Cancelar
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <!-- No hay pedidos registrados -->
+        <div class="sin-pedidos">
+            <p>Aún no se han registrado pedidos en la tienda.</p>
+            <p>Cuando los clientes realicen compras aparecerán aquí.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

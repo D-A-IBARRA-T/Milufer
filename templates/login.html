@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <!-- ============================================= -->
+    <!--           PÁGINA DE INICIO DE SESIÓN         -->
+    <!-- ============================================= -->
+    <div class="contenedor-login">
+
+        <!-- Título de la página -->
+        <h1>Iniciar Sesión</h1>
+        <p>Ingresa con tu cuenta de Milufer</p>
+
+        <!-- Formulario de login -->
+        <form method="post" class="formulario-login">
+
+            {% csrf_token %}
+
+            <!-- Campo para el nombre de usuario -->
+            <div class="campo">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" 
+                       name="username" 
+                       id="username" 
+                       placeholder="Tu usuario" 
+                       required>
+            </div>
+
+            <!-- Campo para la contraseña -->
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input type="password" 
+                       name="password" 
+                       id="password" 
+                       placeholder="Tu contraseña" 
+                       required>
+            </div>
+
+            <!-- Botón de enviar -->
+            <button type="submit" class="boton-login">
+                Iniciar sesión
+            </button>
+
+        </form>
+
+        <!-- Enlace a la página de registro -->
+        <div class="opcion-registro">
+            <p>¿Aún no tienes cuenta?</p>
+            <a href="{% url 'usuarios:registro' %}" class="enlace-registro">
+                Crear una cuenta ahora
+            </a>
+        </div>
+
+    </div>
+
+{% endblock %}
