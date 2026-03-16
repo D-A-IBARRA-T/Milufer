@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -23,6 +22,7 @@ class Producto(models.Model):
     stock = models.PositiveIntegerField(default=0)
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
     activo = models.BooleanField(default=True)
+    destacado = models.BooleanField(default=False)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
 
