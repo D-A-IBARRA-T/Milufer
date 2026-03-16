@@ -4,51 +4,46 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
 
+<div class="bienvenida">
+    <h1>Milufer</h1>
+    <p>
+        Tu tienda especial de accesorios y joyería.<br>
+        Piezas delicadas y únicas para cada momento importante.
+    </p>
+</div>
 
-    <!-- ============================================= -->
-    <!--           SECCIÓN DE BIENVENIDA              -->
-    <!-- ============================================= -->
-    <div class="bienvenida">
-        <h1>Milufer</h1>
-        <p>
-            Tu tienda especial de accesorios y joyería.<br>
-            Piezas delicadas y únicas para cada momento importante.
-        </p>
-    </div>
+<section class="productos-destacados">
+    <div class="contenedor">
+        <h2>Productos destacados</h2>
 
-    <!-- ============================================= -->
-    <!--        SECCIÓN PRODUCTOS DESTACADOS          -->
-    <!-- ============================================= -->
-    <section class="productos-destacados">
-        <div class="contenedor">
-            <h2>Productos destacados</h2>
-
-            {% if productos %}
-                <div class="grid-productos">
-                    {% for producto in productos %}
-                        <article class="tarjeta-producto">
-                            <!-- Imagen -->
-                            <div class="imagen-contenedor">
+        {% if productos_destacados %}
+            <div class="grid-productos">
+                {% for producto in productos_destacados %}
+                    <article class="tarjeta-producto">
+                        <div class="imagen-contenedor">
+                            {% if producto.imagen %}
                                 <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" loading="lazy">
-                            </div>
+                            {% else %}
+                                <img src="{% static 'media/logo.png' %}" alt="{{ producto.nombre }}" loading="lazy">
+                            {% endif %}
+                        </div>
 
-                            <!-- Contenido -->
-                            <div class="contenido-tarjeta">
-                                <h3>{{ producto.nombre }}</h3>
-                                <div class="precio">{{ producto.precio }} €</div>
-                                <a href="{% url 'producto_detalle' producto.id %}" class="boton-ver">
-                                    Ver producto
-                                </a>
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="mensaje-vacio">
-                    <p>Todavía no hay productos destacados para mostrar.</p>
-                </div>
-            {% endif %}
-        </div>
-    </section>
+                        <div class="contenido-tarjeta">
+                            <h3>{{ producto.nombre }}</h3>
+                            <div class="precio">{{ producto.precio }} €</div>
+                            <a href="{% url 'productos:producto_detalle' producto.id %}" class="boton-ver">
+                                Ver producto
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="mensaje-vacio">
+                <p>Todavía no hay productos para mostrar.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
 
 {% endblock %}
